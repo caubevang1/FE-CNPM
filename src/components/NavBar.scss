@@ -1,0 +1,59 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: black;
+    width: 93.73%;
+    color: white;
+
+    .logo {
+        font-size: 24px;
+        font-weight: bold
+    }
+
+    .nav-links {
+        list-style: none;
+        display: flex;
+
+        li {
+            margin: 0 15px;
+
+            a {
+                color: white;
+                text-decoration: none;
+
+                &:hover {
+                    color: orange;
+                }
+            }
+        }
+    }
+
+    .auth-buttons {
+
+        .login,
+        .register {
+            padding: 8px 15px;
+            margin-left: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .register {
+            background: red;
+            color: white;
+        }
+
+        .register:hover {
+            background: darkred;
+        }
+    }
+}
