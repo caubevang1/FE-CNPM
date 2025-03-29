@@ -2,12 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     width: 100vw;
+    height: 100vh;
     background: url('../background2.jpg') no-repeat center center;
     background-size: cover;
 }
-
 
 .auth-box {
     display: flex;
@@ -17,6 +16,7 @@
     padding: 20px;
     border-radius: 10px;
     width: 400px;
+    max-width: 90%;
     text-align: center;
     color: white;
 }
@@ -49,6 +49,7 @@ input {
     font-weight: bold;
     cursor: pointer;
     border-radius: 5px;
+    transition: background 0.3s ease;
 }
 
 .auth-button:hover {
@@ -63,4 +64,8 @@ p {
 p span {
     color: orange;
     cursor: pointer;
+}
+
+p span:hover {
+    text-decoration: underline;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./components/NavBar";
 import AuthPage from "./components/AuthPage";
+import "./App.scss";
 
 class App extends Component {
   constructor(props) {

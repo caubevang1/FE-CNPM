@@ -4,12 +4,12 @@
     align-items: center;
     padding: 15px 50px;
     background: black;
-    width: 93.73%;
+    width: 100%;
     color: white;
 
     .logo {
         font-size: 24px;
-        font-weight: bold
+        font-weight: bold;
     }
 
     .nav-links {
@@ -22,6 +22,7 @@
             a {
                 color: white;
                 text-decoration: none;
+                transition: color 0.3s ease;
 
                 &:hover {
                     color: orange;
@@ -39,6 +40,7 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.3s ease;
         }
 
         .login {
