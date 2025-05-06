@@ -47,10 +47,6 @@ export default function Login() {
             SwalConfig('Đăng nhập thành công', 'success', false);
             history.replace({ pathname: '/' });
         } catch (error) {
-            console.log(error);
-            console.log(error.response.data.content);
-            console.log(error.response.data);
-            console.log(error.responset);
             SwalConfig(error.response.data.message, 'error', true, 3000);
         }
     };

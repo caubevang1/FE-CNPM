@@ -126,7 +126,7 @@ export const capNhatNguoiDung = (user) => async (dispatch) => {
 export const layDanhSachLoaiNguoiDung = async (dispatch) => {
     try {
         const result = await LayDanhSachLoaiNguoiDung()
-        dispatch(layDanhSachLoaiNguoiDungAction(result.data.content))
+        dispatch(layDanhSachLoaiNguoiDungAction(result.data.body))
     } catch (error) {
         console.log(error)
     }
@@ -134,7 +134,9 @@ export const layDanhSachLoaiNguoiDung = async (dispatch) => {
 
 export const ThemNguoiDung = (user) => async (dispatch) => {
     try {
-        await ThemNguoiDungService(user)
+        console.log("Gọi ThemNguoiDung với:", user);
+        const res = await ThemNguoiDungService(user);
+        console.log("Kết quả ThemNguoiDungService:", res);
         SwalConfig('Thêm thành công', 'success', true)
         dispatch(callApiUser)
         history.push('/admin/user')

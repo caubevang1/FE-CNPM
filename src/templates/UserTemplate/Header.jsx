@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Swal from 'sweetalert2'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,9 +11,8 @@ import { setStatusLogin } from '../../redux/reducers/UserReducer'
 import { LOCALSTORAGE_USER } from '../../utils/constant'
 import popcornImg from '../../assets/img/popcorn2.png';
 
-// Gán hàm vào biến trước khi export
 const Header = () => {
-
+    const navBarRef = useRef(null);  // Sử dụng useRef để tham chiếu đến navBarHeader
     const isLogin = useSelector(state => state.UserReducer.isLogin)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -24,15 +23,23 @@ const Header = () => {
             dispatch(setStatusLogin(true))
         }
 
-        document.addEventListener('scroll', () => {
+        const handleScroll = () => {
             if (window.scrollY > 50) {
-                document.getElementById('navBarHeader').style.background = 'rgb(255 255 255 / 80%)'
+                if (navBarRef.current) {
+                    navBarRef.current.style.background = 'rgb(255 255 255 / 80%)'
+                }
             } else {
-                document.getElementById('navBarHeader').style.background = '#fff'
+                if (navBarRef.current) {
+                    navBarRef.current.style.background = '#fff'
+                }
             }
-        })
+        };
 
-    }, [dispatch])  // Thêm dispatch vào dependency array
+        document.addEventListener('scroll', handleScroll);
+        return () => {
+            document.removeEventListener('scroll', handleScroll);
+        };
+    }, [dispatch]);
 
     const showDrawer = () => {
         setOpen(true);
@@ -117,7 +124,7 @@ const Header = () => {
             </Drawer>
 
             <header className="bg-gray-400 font-sans leading-normal tracking-normal">
-                <nav style={{ borderBottom: '1px solid #c1c0c04a' }} id='navBarHeader' className="transition-all duration-500 flex items-center justify-between flex-wrap bg-white py-2 px-4 fixed w-full z-10 top-0">
+                <nav style={{ borderBottom: '1px solid #c1c0c04a' }} ref={navBarRef} id='navBarHeader' className="transition-all duration-500 flex items-center justify-between flex-wrap bg-white py-2 px-4 fixed w-full z-10 top-0">
                     <div className="flex items-center flex-shrink-0 text-white mr-4">
                         <NavLink to='/' aria-label="Back to homepage" className="flex items-center">
                             <img

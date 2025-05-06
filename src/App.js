@@ -17,7 +17,6 @@ import Showtime from './pages/Admin/Film/Showtime';
 import AddNewFilm from './pages/Admin/Film/AddNewFilm';
 import Users from './pages/Admin/Users/Users'
 import EditFilm from './pages/Admin/Film/EditFilm';
-import AddNewUser from './pages/Admin/Users/AddNewUser';
 import EditUser from './pages/Admin/Users/EditUser';
 import ForgotPassword from './pages/User/ForgotPassword';
 import ResetPassword from './pages/User/ResetPassword';
@@ -43,7 +42,6 @@ function App() {
                 <Route path='/admin' element={<AdminTemplate />}>
                     <Route path='/admin' index element={<Dashboard />} />
                     <Route path='user' element={<Users />} />
-                    <Route path='user/addnewuser' element={<AddNewUser />} />
                     <Route path='user/edit/:id' element={<EditUser />} />
                     <Route path='film' element={<Film />} />
                     <Route path='film/edit/:id' element={<EditFilm />} />

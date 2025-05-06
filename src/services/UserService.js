@@ -15,7 +15,7 @@ export const LayDanhSachNguoiDung = () => http.get(`/users`)
 export const XoaNguoiDung = (ID) => http.delete(`/users/${ID}`)
 // export const XoaNguoiDung = (taiKhoan) => http.delete(`/QuanLyNguoiDung/XoaNguoiDung?taiKhoan=${taiKhoan}`)
 
-export const LayDanhSachLoaiNguoiDung = () => http.get(`/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung`)
+export const LayDanhSachLoaiNguoiDung = () => http.get(`/roles`)
 
 export const CapNhatThongTinNguoiDung = (user) => http.put(`/users/${user.id}`, user)
 

@@ -117,9 +117,6 @@ export default function Users() {
     ];
     return <div className='adminFilm'>
         <h2 className='text-2xl uppercase font-bold mb-4'>Quản lý người dùng</h2>
-
-        <Button onClick={() => navigate('/admin/user/addnewuser')} className='mb-4 font-semibold border-black'>Thêm người dùng</Button>
-
         <Search
             className='mb-4'
             placeholder="Tìm kiếm theo tài khoản"
