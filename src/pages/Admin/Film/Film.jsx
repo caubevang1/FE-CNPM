@@ -38,8 +38,8 @@ export default function Film() {
     const columns = [
         {
             title: 'Mã phim',
-            dataIndex: 'maPhim',
-            sorter: (a, b) => a.maPhim - b.maPhim,
+            dataIndex: 'movieId',
+            sorter: (a, b) => a.movieId - b.movieId,
             sortDirections: ['descend'],
             width: 150,
         },
@@ -72,17 +72,17 @@ export default function Film() {
         },
         {
             title: 'Mô tả',
-            dataIndex: 'moTa',
+            dataIndex: 'movieDescription',
             sorter: (a, b) => {
-                let moTaA = a.moTa.toLowerCase().trim();
-                let moTaB = b.moTa.toLowerCase().trim();
+                let moTaA = a.movieDescription.toLowerCase().trim();
+                let moTaB = b.movieDescription.toLowerCase().trim();
                 if (moTaA > moTaB) {
                     return 1
                 }
                 return -1
             },
             render: (text, film) => {
-                return film.moTa.length > 80 ? film.moTa.slice(0, 80) + '...' : film.moTa
+                return film.movieDescription.length > 80 ? film.movieDescription.slice(0, 80) + '...' : film.movieDescription
             },
             sortDirections: ['descend'],
         },
@@ -92,7 +92,7 @@ export default function Film() {
             render: (text, film) => {
                 return <>
                     <Tooltip placement="leftBottom" title={'Chỉnh sửa phim'}>
-                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl ' to={`/admin/film/edit/${film.maPhim}`}><EditOutlined /></NavLink>
+                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl ' to={`/admin/film/edit/${film.movieId}`}><EditOutlined /></NavLink>
                     </Tooltip>
                     <Tooltip placement="bottom" title={'Xóa phim'}>
                         <button onClick={() => {
@@ -106,13 +106,13 @@ export default function Film() {
                                 confirmButtonColor: '#f97316'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    dispatch(callApiXoaPhim(film.maPhim))
+                                    dispatch(callApiXoaPhim(film.movieName))
                                 }
                             })
                         }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'><DeleteOutlined /></button>
                     </Tooltip>
                     <Tooltip placement="topRight" title={'Tạo lịch chiếu'}>
-                        <NavLink key={3} className='bg-dark text-orange-600 hover:text-orange-400 ml-3 text-2xl ' to={`/admin/film/showtime/${film.maPhim}/${film.movieName}`}><CalendarOutlined /></NavLink>
+                        <NavLink key={3} className='bg-dark text-orange-600 hover:text-orange-400 ml-3 text-2xl ' to={`/admin/film/showtime/${film.movieId}/${film.movieName}`}><CalendarOutlined /></NavLink>
                     </Tooltip>
                 </>
             },
@@ -132,6 +132,6 @@ export default function Film() {
             onSearch={searchKeyword}
         />
 
-        <Table columns={columns} dataSource={data} rowKey='maPhim' />
+        <Table columns={columns} dataSource={data} rowKey='movieId' />
     </div>;
 };

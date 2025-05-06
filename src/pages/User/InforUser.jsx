@@ -48,7 +48,7 @@ const ThongTinNguoiDung = (thongTinNguoiDung) => {
 //                         <p className="text-gray-500">Ngày đặt: {moment(item.ngayDat).format('DD-MM-YYYY ~ hh:mm A')}</p>
 //                         <p className="text-gray-500">Thời lượng: {item.thoiLuongPhim} phút</p>
 //                         <p>Ghế: {item.danhSachGhe.map((ghe, iGhe) => (
-//                             <button key={iGhe} className='mb-2 text-orange-600 font-semibold text-lg mx-1 px-1 border-orange-100'>{ghe.tenGhe}</button>
+//                             <button key={iGhe} className='mb-2 text-orange-600 font-semibold text-lg mx-1 px-1 border-orange-100'>{ghe.seatRow}</button>
 //                         ))}</p>
 //                     </div>
 //                 </div>

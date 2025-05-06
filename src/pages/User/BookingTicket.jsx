@@ -44,7 +44,7 @@ const BookingTicket = (thongTinNguoiDung, id, setIsLoading) => {
             const seatState = itemGhe.seatState === true;
 
             const indexGheDangDat = danhSachGheDangDat.findIndex(
-                (itemGheDangDat) => itemGheDangDat.maGhe === itemGhe.maGhe
+                (itemGheDangDat) => itemGheDangDat.seatId === itemGhe.seatId
             );
             if (indexGheDangDat !== -1) {
                 classGheDangDat = 'gheDangDat';
@@ -76,7 +76,7 @@ const BookingTicket = (thongTinNguoiDung, id, setIsLoading) => {
                                 <FontAwesomeIcon icon={faUserTag} />
                             )
                         ) : (
-                            itemGhe.stt
+                            itemGhe.seatNumber
                         )}
                     </button>
                     {(index + 1) % size === 0 ? <br /> : ''}
@@ -172,12 +172,12 @@ const BookingTicket = (thongTinNguoiDung, id, setIsLoading) => {
                     <div className="flex flex-row my-5 items-center">
                         <div className="flex flex-wrap items-center">
                             <span className="text-black font-semibold text-lg">Ghế: </span>
-                            {_.sortBy(danhSachGheDangDat, ['stt']).map((item, idx) => (
+                            {_.sortBy(danhSachGheDangDat, ['seatNumber']).map((item, idx) => (
                                 <span
                                     key={idx}
                                     className="mb-2 text-orange-600 font-semibold text-lg mx-1 border-2 px-2 border-orange-100"
                                 >
-                                    {item.stt}
+                                    {item.seatNumber}
                                 </span>
                             ))}
                         </div>
@@ -245,7 +245,7 @@ const KetQuaDatVe = (thongTinNguoiDung) => {
                                     key={iGhe}
                                     className="mb-2 text-orange-600 font-semibold text-lg mx-1 px-1 border-orange-100"
                                 >
-                                    {ghe.tenGhe}
+                                    {ghe.seatRow}
                                 </button>
                             ))}
                         </p>
@@ -279,7 +279,7 @@ const BookingTicketPage = () => {
         if (!getLocalStorage(LOCALSTORAGE_USER)) {
             navigate('/login');
         } else {
-            dispatch(callApiThongTinNguoiDung());
+            dispatch(callApiThongTinNguoiDung);
             const callApiPhongVe = async () => {
                 const result = await LayDanhSachPhongVeService(param.id);
                 dispatch(layDanhSachPhongVe(result.data.content));

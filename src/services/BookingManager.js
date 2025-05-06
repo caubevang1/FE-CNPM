@@ -6,4 +6,4 @@ export const LayDanhSachPhongVeService = (movieId) => http.get(`QuanLyDatVe/LayD
 
 // export const DatVe = (thongTinDatVe = new ThongTinDatVe()) => http.post(`QuanLyDatVe/DatVe`, thongTinDatVe)
 
-export const TaoLichChieu = (dataLichChieu) => http.post(`QuanLyDatVe/TaoLichChieu`, dataLichChieu)
+export const TaoLichChieu = (dataLichChieu) => http.post(`schedule`, dataLichChieu)

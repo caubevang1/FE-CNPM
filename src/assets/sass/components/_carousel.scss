@@ -19,7 +19,7 @@
             height: 15px !important;
         }
     }
-    
+
     .img-carousel {
         height: 700px !important;
         width: 100%;
@@ -59,11 +59,13 @@
 
 // Carousel Modal
 .ant-modal {
-    width: 700px !important;
+    width: 900px !important;
 
     .ant-modal-content {
-        height: 400px !important;
+        height: 600px !important;
         border-radius: 0.75rem;
+        background: transparent !important;
+        box-shadow: none !important;
 
         .ant-modal-body {
             padding: 0 !important;
@@ -72,5 +74,3 @@
         }
     }
 }
-
-

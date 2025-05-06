@@ -18,9 +18,9 @@ export class Ghe {
     seatState = false;
     seatPrice = '';
     seatType = '';
-    maGhe = '';
+    seatId = '';
     maRap = '';
-    stt = '';
+    seatNumber = '';
     taiKhoanNguoiDat = '';
-    tenGhe = ''
+    seatRow = ''
 }

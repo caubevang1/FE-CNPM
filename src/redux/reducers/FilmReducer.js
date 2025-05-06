@@ -37,6 +37,7 @@ export default FilmReducer.reducer
 
 export const callApiLichChieuTheoPhim = (value) => async (dispatch) => {
     try {
+        console.log(value)
         const apiLichChieu = await LayThongTinLichChieu(value)
         dispatch(getLichChieuTheoPhim(apiLichChieu.data.content))
     } catch (error) {
@@ -47,7 +48,6 @@ export const callApiLichChieuTheoPhim = (value) => async (dispatch) => {
 export const callApiFilm = async (dispatch) => {
     try {
         const apiFilm = await LayDanhSachPhim()
-        // dispatch(getFilmList(apiFilm.data.content))
         dispatch(getFilmList(apiFilm.data))
     } catch (error) {
         console.log(error)
@@ -65,9 +65,10 @@ export const themPhimApi = async (formData) => {
 }
 
 
-export const callApiThongTinPhim = (maPhim) => async (dispatch) => {
+export const callApiThongTinPhim = (movieId) => async (dispatch) => {
     try {
-        const result = await LayThongTinPhimChiTiet(maPhim)
+        console.log(movieId)
+        const result = await LayThongTinPhimChiTiet(movieId)
         dispatch(layThongTinPhim(result.data.content))
     } catch (error) {
         console.log(error)
@@ -85,9 +86,9 @@ export const capNhatPhim = async (formData) => {
     }
 }
 
-export const callApiXoaPhim = (maPhim) => async (dispatch) => {
+export const callApiXoaPhim = (movieId) => async (dispatch) => {
     try {
-        const result = await xoaPhim(maPhim)
+        const result = await xoaPhim(movieId)
         dispatch(callApiFilm)
         SwalConfig(result.data.content, 'success', false)
         history.push('/admin/film')

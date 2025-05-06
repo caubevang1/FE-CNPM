@@ -16,11 +16,11 @@ const Ghe = {
     seatState: false,
     seatPrice: '',
     seatType: '',
-    maGhe: '',
+    seatId: '',
     maRap: '',
-    stt: '',
+    seatNumber: '',
     taiKhoanNguoiDat: '',
-    tenGhe: ''
+    seatRow: ''
 }
 
 const initialState = {
@@ -29,7 +29,7 @@ const initialState = {
         danhSachGhe: [],
     },
     danhSachGheDangDat: [],
-    danhSachGheKhachDat: [{ maGhe: 75561 },]
+    danhSachGheKhachDat: [{ seatId: 75561 },]
 }
 
 const BookingReducer = createSlice({
@@ -40,12 +40,12 @@ const BookingReducer = createSlice({
             state.chiTietPhongVe = payload
         },
         datGhe: (state, { type, payload }) => {
-            let gheDangChon = state.danhSachGheDangDat.find(item => item.maGhe === payload.maGhe)
+            let gheDangChon = state.danhSachGheDangDat.find(item => item.seatId === payload.seatId)
             if (!gheDangChon) {
                 state.danhSachGheDangDat.push(payload)
             }
             else {
-                state.danhSachGheDangDat = state.danhSachGheDangDat.filter(item => item.maGhe !== payload.maGhe)
+                state.danhSachGheDangDat = state.danhSachGheDangDat.filter(item => item.seatId !== payload.seatId)
             }
         },
         xoaDanhSachGheDangDat: (state, { type, payload }) => {

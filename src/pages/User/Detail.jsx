@@ -28,17 +28,21 @@ export default function Detail() {
 
         const callApiChiTiet = async (id) => {
             try {
+                console.log(id);
                 const apiChiTiet = await LayThongTinPhimChiTiet(id);
                 dispatch(getfilmDetail(apiChiTiet.data.content));
-                dispatch(callApiLichChieuTheoPhim(apiChiTiet.data.content.maPhim));
+                console.log(apiChiTiet.data.content);
+                console.log(apiChiTiet.data);
+                dispatch(callApiLichChieuTheoPhim(apiChiTiet.data.content.movieId));
                 setIsLoadingDetail(false);
-                setPercent(apiChiTiet.data.content.danhGia * 10);
+                setPercent(apiChiTiet.data.content.movieReview * 10);
             } catch (error) {
                 history.replace('/notfound');
             }
         };
 
         callApiChiTiet(param.id);
+        console.log(param.id);
 
         return () => {
             unlisten();
@@ -77,10 +81,10 @@ export default function Detail() {
                                     {filmDetail.movieName}
                                 </h2>
                                 <p className="text-gray-300 tracking-wide text-justify">
-                                    {filmDetail.moTa.length > 300 ? filmDetail.moTa.slice(0, 300) + '...' : filmDetail.moTa}
+                                    {filmDetail.movieDescription.length > 300 ? filmDetail.movieDescription.slice(0, 300) + '...' : filmDetail.movieDescription}
                                 </p>
                                 <p className="font-bold text-white mt-2">
-                                    {moment(filmDetail.ngayKhoiChieu).format('DD-MM-YYYY')}
+                                    {moment(filmDetail.scheduleDate).format('DD-MM-YYYY')}
                                 </p>
                                 <div className="hidden xl:block">
                                     <button

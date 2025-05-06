@@ -1,13 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
     CapNhatThongTinNguoiDung, LayDanhSachLoaiNguoiDung, LayDanhSachNguoiDung,
-    LayThongTinPhimNguoiDungEdit, LayThongTinTaiKhoan, XoaNguoiDung, ThemNguoiDungService
+    LayThongTinPhimNguoiDungEdit, LayThongTinTaiKhoan, XoaNguoiDung
 } from '../../services/UserService';
 import { removeLocalStorage, SwalConfig } from '../../utils/config';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
 import { history } from '../../utils/history';
-import { first } from 'lodash';
-import { current } from '@reduxjs/toolkit';
 
 const thongTinTaiKhoan = {
     // accessToken: '',
@@ -132,15 +130,3 @@ export const layDanhSachLoaiNguoiDung = async (dispatch) => {
     }
 }
 
-export const ThemNguoiDung = (user) => async (dispatch) => {
-    try {
-        console.log("Gọi ThemNguoiDung với:", user);
-        const res = await ThemNguoiDungService(user);
-        console.log("Kết quả ThemNguoiDungService:", res);
-        SwalConfig('Thêm thành công', 'success', true)
-        dispatch(callApiUser)
-        history.push('/admin/user')
-    } catch (error) {
-        SwalConfig(`${error.response.data.content}`, 'error', true, 3000)
-    }
-}

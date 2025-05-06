@@ -44,7 +44,7 @@ function App() {
                     <Route path='user' element={<Users />} />
                     <Route path='user/edit/:id' element={<EditUser />} />
                     <Route path='film' element={<Film />} />
-                    <Route path='film/edit/:id' element={<EditFilm />} />
+                    <Route path='film/edit/:movieName' element={<EditFilm />} />
                     <Route path='film/showtime/:id/:movieName' element={<Showtime />} />
                     <Route path='film/addnewfilm' element={<AddNewFilm />} />
                     <Route path='showtime' element={<Showtime />} />

@@ -12,26 +12,31 @@ import useRoute from '../../../hooks/useRoute';
 export default () => {
 
     const { thongTinPhim } = useSelector(state => state.FilmReducer)
+    console.log(thongTinPhim)
     const [imgSrc, setImgSrc] = useState('')
     const dispatch = useDispatch()
     const { param } = useRoute()
+    console.log(param)
     const dateFormat = 'DD/MM/YYYY';
     useEffect(() => {
-        dispatch(callApiThongTinPhim(param.id))
+        console.log(param.username)
+        console.log(thongTinPhim)
+        console.log(param)
+        dispatch(callApiThongTinPhim(param.username))
     }, [])
 
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-            maPhim: thongTinPhim.maPhim,
+            movieId: thongTinPhim.movieId,
             movieName: thongTinPhim.movieName,
             trailer: thongTinPhim.trailer,
-            moTa: thongTinPhim.moTa,
-            ngayKhoiChieu: thongTinPhim.ngayKhoiChieu,
+            movieDescription: thongTinPhim.movieDescription,
+            scheduleDate: thongTinPhim.scheduleDate,
             dangChieu: thongTinPhim.dangChieu,
             sapChieu: thongTinPhim.sapChieu,
             hot: false,
-            danhGia: thongTinPhim.danhGia,
+            movieReview: thongTinPhim.movieReview,
             moviePoster: null,
             maNhom: GROUPID
         },
@@ -76,8 +81,8 @@ export default () => {
     }
 
     const handleChangeDatePicker = (value) => {
-        let ngayKhoiChieu = moment(value)
-        formik.setFieldValue('ngayKhoiChieu', ngayKhoiChieu)
+        let scheduleDate = moment(value)
+        formik.setFieldValue('scheduleDate', scheduleDate)
     }
     return (
         <div className='addFilmAdmin'>
@@ -98,10 +103,10 @@ export default () => {
                     <Input name='trailer' onChange={formik.handleChange} value={formik.values.trailer} />
                 </Form.Item>
                 <Form.Item label="Mô tả">
-                    <Input name='moTa' onChange={formik.handleChange} value={formik.values.moTa} />
+                    <Input name='movieDescription' onChange={formik.handleChange} value={formik.values.movieDescription} />
                 </Form.Item>
                 <Form.Item label="Ngày khởi chiếu">
-                    <DatePicker onChange={handleChangeDatePicker} value={moment(formik.values.ngayKhoiChieu)} format={dateFormat} />
+                    <DatePicker onChange={handleChangeDatePicker} value={moment(formik.values.scheduleDate)} format={dateFormat} />
                 </Form.Item>
                 <Form.Item label="Đang chiếu" valuePropName="checked" >
                     <Switch onChange={handleChangeSwitch('dangChieu')} checked={formik.values.dangChieu} />
@@ -113,7 +118,7 @@ export default () => {
                     <Switch onChange={handleChangeSwitch('hot')} checked={formik.values.hot} />
                 </Form.Item>
                 <Form.Item label="Số sao">
-                    <InputNumber onChange={value => formik.setFieldValue('danhGia', value)} min={1} max={10} value={formik.values.danhGia} />
+                    <InputNumber onChange={value => formik.setFieldValue('movieReview', value)} min={1} max={10} value={formik.values.movieReview} />
                 </Form.Item>
                 <Form.Item label="Hình ảnh">
                     <input type="file" onChange={handleChangeFile} /> <br />

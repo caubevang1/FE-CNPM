@@ -1,11 +1,11 @@
 @mixin FormLoginRegister {
-    background: url('../../img/background-signin-signup.jpg');
+    background: url('../../img/minion.jpg');
     height: 100vh;
     width: 100%;
     background-size: cover;
     position: relative;
 
-    &__overlay{
+    &__overlay {
         position: absolute;
         top: 0;
         left: 0;
@@ -20,7 +20,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         max-width: 30rem;
         width: 100%;
 
@@ -29,7 +29,7 @@
             width: 100%;
             height: 3rem;
         }
-    
+
         &-label {
             position: absolute;
             font-size: 1rem;
@@ -39,7 +39,7 @@
             color: hsl(0, 0%, 65%);
             transition: all 0.3s ease;
         }
-    
+
         &-input {
             position: absolute;
             font-size: 1rem;
@@ -50,17 +50,17 @@
             border-radius: 0.25rem;
             border: 1.5px solid hsl(0, 0%, 65%);
             transition: all 0.2s ease-in-out;
-    
+
             &::placeholder {
                 opacity: 0;
                 visibility: hidden;
                 color: transparent;
             }
-    
+
             &:focus {
                 outline: none;
                 border: 2px solid $ColorPrimary;
-    
+
                 &~.form-label {
                     top: -0.75rem;
                     z-index: 5;
@@ -68,12 +68,13 @@
                     font-weight: 500;
                     color: $ColorPrimary;
                     transition: all 0.2s ease-in-out;
-                   
+
                 }
             }
+
             &:not(:placeholder-shown).form-input {
                 &:not(:focus) {
-                    & ~ .form-label {
+                    &~.form-label {
                         top: -0.75rem;
                         left: 1rem;
                         z-index: 9;
@@ -84,6 +85,7 @@
                 }
             }
         }
+
         &-err {
             color: $ColorFormErr;
         }
@@ -107,4 +109,3 @@
         @warn"`{$screen}` isn't in breakpoint";
     }
 }
-

@@ -1,24 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
-import avatar from '../../assets/img/avatar.jpg'
-import onepiece from '../../assets/img/onepiece.jpg'
-import pussInBoots from '../../assets/img/pussInBoots.jpg'
+import diaDao from '../../assets/img/diaDao.jpg'
+import thamTuKien from '../../assets/img/thamTuKien.jpg'
+import transformer from '../../assets/img/transformer1.jpg'
 
 const initialState = {
     data: [
         {
             maBanner: 1,
-            link: 'https://www.youtube.com/watch?v=rcpuVDA9JPY',
-            img: avatar
+            link: 'https://www.youtube.com/watch?v=-OGDDtsIBHA',
+            img: diaDao
         },
         {
             maBanner: 2,
-            link: 'https://www.youtube.com/watch?v=7Ma1uab-bQM&t=4s',
-            img: onepiece
+            link: 'https://www.youtube.com/watch?v=QiXNbEKF3U0',
+            img: thamTuKien
         },
         {
             maBanner: 3,
-            link: 'https://www.youtube.com/watch?v=fovTZDDPgAQ',
-            img: pussInBoots
+            link: 'https://www.youtube.com/watch?v=MQkxAmkOkxs',
+            img: transformer
         },
     ],
     modalData: ''
