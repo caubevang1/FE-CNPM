@@ -77,19 +77,20 @@ export default function Users() {
 
         {
             title: 'Loại người dùng',
-            dataIndex: 'loaiNguoiDung',
+            dataIndex: 'roles',
             render: (text, user) => {
-                return user.maLoaiNguoiDung === 'QuanTri' ? 'Quản trị' : 'Khách hàng'
+                const roleNames = user.roles?.map(role => role.name?.toLowerCase());
+                return roleNames?.includes('admin') ? 'ADMIN' : 'USER';
             },
-
         },
+
         {
             title: 'Hành động',
             dataIndex: 'hanhDong',
             render: (text, user) => {
                 return <>
                     <Tooltip placement="leftBottom" title={'Chỉnh sửa'}>
-                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl ' to={`/admin/user/edit/${user.username}`}><EditOutlined /></NavLink>
+                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl ' to={`/admin/user/edit/${user.id}`}><EditOutlined /></NavLink>
                     </Tooltip>
                     <Tooltip placement="top" title={'Xóa'}>
                         <button onClick={() => {

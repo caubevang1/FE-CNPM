@@ -29,7 +29,7 @@ const ThongTinNguoiDung = (thongTinNguoiDung) => {
                 </div>
                 <div>
                     <p className='font-semibold text-[17px] mb-1'>Loại tài khoản</p>
-                    <input readOnly type="text" value={thongTinNguoiDung?.maLoaiNguoiDung} className='p-2 border-none w-full rounded-sm text-[16px]' />
+                    <input readOnly type="text" value={thongTinNguoiDung?.roles} className='p-2 border-none w-full rounded-sm text-[16px]' />
                 </div>
             </div>
         </section>

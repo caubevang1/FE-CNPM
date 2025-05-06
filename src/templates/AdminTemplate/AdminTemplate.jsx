@@ -29,7 +29,7 @@ export default function AdminTemplate() {
                 try {
                     const apiNguoiDung = await LayThongTinTaiKhoan()
                     setIsLoading(false)
-                    // if (apiNguoiDung.data.content.maLoaiNguoiDung !== token.maLoaiNguoiDung) {
+                    // if (apiNguoiDung.data.content.roles !== token.roles) {
                     //     navigate('/notfound')
                     // } else {
                     //     setIsLoading(false)

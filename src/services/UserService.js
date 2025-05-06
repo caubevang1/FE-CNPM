@@ -1,8 +1,10 @@
+import Password from "antd/es/input/Password";
 import { http } from "../utils/baseUrl";
+import { first } from "lodash";
 
 export const LayThongTinTaiKhoan = () => http.get('/users/myInfo')
 
-export const LayThongTinPhimNguoiDungEdit = (username) => http.get(`/user/${username}`)
+export const LayThongTinPhimNguoiDungEdit = (user) => http.get(`/users/${user.id}`)
 
 export const DangNhap = userLogin => http.post('/auth/login', userLogin)
 
@@ -15,7 +17,7 @@ export const XoaNguoiDung = (ID) => http.delete(`/users/${ID}`)
 
 export const LayDanhSachLoaiNguoiDung = () => http.get(`/QuanLyNguoiDung/LayDanhSachLoaiNguoiDung`)
 
-export const CapNhatThongTinNguoiDung = (user) => http.put(`/users/${user.ID}`, user)
+export const CapNhatThongTinNguoiDung = (user) => http.put(`/users/${user.id}`, user)
 
 export const ThemNguoiDungService = (user) => http.post(`/QuanLyNguoiDung/ThemNguoiDung`, user)
 

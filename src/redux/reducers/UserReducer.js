@@ -13,7 +13,7 @@ const thongTinTaiKhoan = {
     // accessToken: '',
     // email: '',
     // hoTen: '',
-    // maLoaiNguoiDung: '',
+    // roles: '',
     // maNhom: '',
     // phoneNumber: '',
     // username: ''
@@ -28,7 +28,7 @@ const thongTinTaiKhoan = {
     avatar: '',
     point: 0,
     roles: 'ADMIN',
-    maLoaiNguoiDung: 'QuanTri',
+    roles: 'admin',
     hoTen: '',
 }
 
@@ -56,7 +56,6 @@ const UserReducer = createSlice({
                 const { firstName, lastName } = payload[0];
                 state.hoTen = `${firstName} ${lastName}`;
             }
-            console.log(state.hoTen)
         },
         layThongTinNguoiDungEdit: (state, { type, payload }) => {
             state.thongTinNguoiDungEdit = payload
@@ -74,8 +73,6 @@ export default UserReducer.reducer
 export const callApiThongTinNguoiDung = async (dispatch) => {
     try {
         const apiNguoiDung = await LayThongTinTaiKhoan()
-        // console.log(apiNguoiDung.data.content)
-        // console.log(apiNguoiDung.data.body)
         dispatch(setStatusLogin(true))
         dispatch(setUserInfor(apiNguoiDung.data.body))
     } catch (error) {
@@ -105,10 +102,10 @@ export const callApiDeleteUser = (id) => async (dispatch) => {
     }
 }
 
-export const callApiThongTinNguoiDungEdit = (username) => async (dispatch) => {
+export const callApiThongTinNguoiDungEdit = (user) => async (dispatch) => {
     try {
-        const result = await LayThongTinPhimNguoiDungEdit(username)
-        dispatch(layThongTinNguoiDungEdit(result.data.content))
+        const result = await LayThongTinPhimNguoiDungEdit(user)
+        dispatch(layThongTinNguoiDungEdit(result.data.body))
     } catch (error) {
         console.log(error)
     }
@@ -121,7 +118,8 @@ export const capNhatNguoiDung = (user) => async (dispatch) => {
         dispatch(callApiUser)
         history.push('/admin/user')
     } catch (error) {
-        SwalConfig(`${error.response.data.content}`, 'error', true, 3000)
+        console.log(error)
+        SwalConfig(`${error?.response?.data?.content || 'Lỗi hệ thống'}`, 'error', true, 3000)
     }
 }
 
