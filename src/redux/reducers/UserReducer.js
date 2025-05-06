@@ -7,6 +7,7 @@ import { removeLocalStorage, SwalConfig } from '../../utils/config';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
 import { history } from '../../utils/history';
 import { first } from 'lodash';
+import { current } from '@reduxjs/toolkit';
 
 const thongTinTaiKhoan = {
     // accessToken: '',
@@ -28,6 +29,7 @@ const thongTinTaiKhoan = {
     point: 0,
     roles: 'ADMIN',
     maLoaiNguoiDung: 'QuanTri',
+    hoTen: '',
 }
 
 const initialState = {
@@ -50,6 +52,11 @@ const UserReducer = createSlice({
         },
         getUserList: (state, { type, payload }) => {
             state.arrayUser = payload
+            if (payload.length > 0) {
+                const { firstName, lastName } = payload[0];
+                state.hoTen = `${firstName} ${lastName}`;
+            }
+            console.log(state.hoTen)
         },
         layThongTinNguoiDungEdit: (state, { type, payload }) => {
             state.thongTinNguoiDungEdit = payload
@@ -67,8 +74,8 @@ export default UserReducer.reducer
 export const callApiThongTinNguoiDung = async (dispatch) => {
     try {
         const apiNguoiDung = await LayThongTinTaiKhoan()
-        console.log(apiNguoiDung.data.content)
-        console.log(apiNguoiDung.data.body)
+        // console.log(apiNguoiDung.data.content)
+        // console.log(apiNguoiDung.data.body)
         dispatch(setStatusLogin(true))
         dispatch(setUserInfor(apiNguoiDung.data.body))
     } catch (error) {
@@ -80,17 +87,17 @@ export const callApiThongTinNguoiDung = async (dispatch) => {
 export const callApiUser = async (dispatch) => {
     try {
         const apiUser = await LayDanhSachNguoiDung()
-        dispatch(getUserList(apiUser.data.content))
+        dispatch(getUserList(apiUser.data.body))
     } catch (error) {
         console.log(error)
     }
 }
 
-export const callApiDeleteUser = (username) => async (dispatch) => {
+export const callApiDeleteUser = (id) => async (dispatch) => {
     try {
-        const result = await XoaNguoiDung(username)
+        const result = await XoaNguoiDung(id)
         dispatch(callApiUser)
-        SwalConfig(result.data.content, 'success', false)
+        SwalConfig("Xóa thành công", 'success', false)
         history.push('/admin/user')
     } catch (error) {
         SwalConfig(error.response.data.content, 'error', false)

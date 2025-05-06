@@ -51,21 +51,19 @@ export default function Users() {
             },
             sortDirections: ['descend'],
         },
+
         {
             title: 'Tên người dùng',
-            dataIndex: 'hoTen',
             sorter: (a, b) => {
-                let hoTenA = a.hoTen.toLowerCase().trim();
-                let hoTenB = b.hoTen.toLowerCase().trim();
-                if (hoTenA > hoTenB) {
-                    return 1
-                }
-                return -1
+                const nameA = `${a.firstName ?? ''} ${a.lastName ?? ''}`.toLowerCase().trim();
+                const nameB = `${b.firstName ?? ''} ${b.lastName ?? ''}`.toLowerCase().trim();
+                return nameA.localeCompare(nameB);
             },
-            render: (text, user) => {
-                return user.hoTen.length > 50 ? user.hoTen.slice(0, 50) + '...' : user.hoTen
+            render: (_, user) => {
+                const fullName = `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim();
+                return fullName.length > 50 ? fullName.slice(0, 50) + '...' : fullName;
             },
-            sortDirections: ['descend'],
+            sortDirections: ['descend', 'ascend'],
         },
 
         {
@@ -105,7 +103,7 @@ export default function Users() {
                                 confirmButtonColor: '#f97316'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    dispatch(callApiDeleteUser(user.username))
+                                    dispatch(callApiDeleteUser(user.id))
                                 }
                             })
                         }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'><DeleteOutlined /></button>

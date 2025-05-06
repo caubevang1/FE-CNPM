@@ -44,7 +44,7 @@ function App() {
                     <Route path='/admin' index element={<Dashboard />} />
                     <Route path='user' element={<Users />} />
                     <Route path='user/addnewuser' element={<AddNewUser />} />
-                    <Route path='user/edit/:username' element={<EditUser />} />
+                    <Route path='user/edit/:id' element={<EditUser />} />
                     <Route path='film' element={<Film />} />
                     <Route path='film/edit/:id' element={<EditFilm />} />
                     <Route path='film/showtime/:id/:movieName' element={<Showtime />} />

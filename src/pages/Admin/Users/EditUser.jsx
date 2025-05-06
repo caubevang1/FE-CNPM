@@ -14,7 +14,8 @@ export default () => {
     const { param } = useRoute()
 
     useEffect(() => {
-        dispatch(callApiThongTinNguoiDungEdit(param.username))
+        console.log(param)
+        dispatch(callApiThongTinNguoiDungEdit(param.id))
         dispatch(layDanhSachLoaiNguoiDung)
     }, [])
 

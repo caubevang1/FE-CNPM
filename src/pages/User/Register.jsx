@@ -41,7 +41,9 @@ class Register extends Component {
 
         // Các điều kiện riêng
         if (name === 'username') {
-            isValid = isValid && kiemTraDinhDang(fieldValue, newErr, name, title, /^\S*$/, 'không được có khoảng cách');
+            isValid = isValid &&
+                kiemTraDoDai(fieldValue, newErr, name, title, 6, 6) &&
+                kiemTraDinhDang(fieldValue, newErr, name, title, /^\S*$/, 'không được có khoảng cách');
         }
         if (name === 'password') {
             isValid = isValid &&
@@ -157,9 +159,6 @@ class Register extends Component {
                                 </label>
                                 <label>
                                     <input type="radio" name="gender" value="0" onChange={this.handleChangeInput} /> Nữ
-                                </label>
-                                <label>
-                                    <input type="radio" name="gender" value="2" onChange={this.handleChangeInput} /> Khác
                                 </label>
                             </div>
                         </div>

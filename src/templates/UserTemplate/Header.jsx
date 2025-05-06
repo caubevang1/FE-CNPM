@@ -123,7 +123,7 @@ const Header = () => {
                             <img
                                 src={popcornImg}
                                 alt="Popcorn"
-                                className="w-[70px] h-[70px] object-cover rounded-full "
+                                className="w-[65px] h-[65px] object-cover rounded-full "
                             />
                             <span className='text-xl font-medium text-orange-500 sm:text-2xl '>Nhóm 13</span>
                         </NavLink>
