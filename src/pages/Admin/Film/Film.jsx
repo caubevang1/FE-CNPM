@@ -105,8 +105,9 @@ export default function Film() {
                                 iconColor: 'rgb(104 217 254)',
                                 confirmButtonColor: '#f97316'
                             }).then((result) => {
+                                console.log(result);
                                 if (result.isConfirmed) {
-                                    dispatch(callApiXoaPhim(film.movieName))
+                                    dispatch(callApiXoaPhim(film.movieId))
                                 }
                             })
                         }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'><DeleteOutlined /></button>
