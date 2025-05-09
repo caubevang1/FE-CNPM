@@ -1,7 +1,6 @@
-import { DatePicker, Form, Input, InputNumber, Switch } from 'antd';
+import { Form, Input, InputNumber } from 'antd';
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import moment from 'moment';
 import { themPhimApi } from '../../../redux/reducers/FilmReducer';
 import { useDispatch } from 'react-redux';
 import { GROUPID } from '../../../utils/constant';
@@ -13,56 +12,35 @@ export default () => {
     const formik = useFormik({
         initialValues: {
             movieName: '',
-            trailer: '',
             movieDescription: '',
-            scheduleDate: '',
-            dangChieu: false,
-            sapChieu: false,
             movieLength: 0,
             movieReview: 0,
-            moviePoster: {},
+            moviePoster: '',
+            movieGenre: '',  // Thêm trường movieGenre vào đây
         },
         onSubmit: (value) => {
-            value.maNhom = GROUPID;
-            const { movieName, trailer, movieDescription, scheduleDate, movieReview } = value;
-            if (movieName && trailer && movieDescription && scheduleDate && movieReview) {
-                const formData = new FormData();
-                for (let key in value) {
-                    if (key !== 'moviePoster') {
-                        formData.append(key, value[key]);
-                    } else {
-                        formData.append('File', value.moviePoster, value.moviePoster.name);
-                    }
-                }
-                dispatch(themPhimApi(formData));
-                setImgSrc('');
+            const { movieName, movieDescription, movieLength, movieReview, moviePoster, movieGenre } = value;
+            if (movieName && movieDescription && movieLength && movieReview && moviePoster && movieGenre) {
+                // Gửi dữ liệu dưới dạng JSON
+                const payload = {
+                    ...value,
+                };
+
+                console.log(payload);
+                // Dispatch action với payload JSON
+                dispatch(themPhimApi(payload));
+
+                setImgSrc(''); // Xóa preview hình ảnh sau khi gửi
             } else {
                 SwalConfig('Vui lòng điền đầy đủ thông tin', 'error', true);
             }
         }
     });
 
-    const handleChangeSwitch = (name) => {
-        return (value) => {
-            formik.setFieldValue(name, value);
-        }
-    };
-
-    const handleChangeDatePicker = (value) => {
-        const scheduleDate = moment(value).format('DD/MM/YYYY');
-        formik.setFieldValue('scheduleDate', scheduleDate);
-    };
-
-    const handleChangeFile = async (e) => {
-        const file = e.target.files[0];
-        if (file && ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].includes(file.type)) {
-            await formik.setFieldValue('moviePoster', file);
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (e) => {
-                setImgSrc(e.target.result);
-            };
-        }
+    const handleChangeImageURL = (e) => {
+        const url = e.target.value;
+        formik.setFieldValue('moviePoster', url);
+        setImgSrc(url);
     };
 
     return (
@@ -76,20 +54,8 @@ export default () => {
                 <Form.Item label="Tên phim">
                     <Input name='movieName' onChange={formik.handleChange} />
                 </Form.Item>
-                <Form.Item label="Trailer">
-                    <Input name='trailer' onChange={formik.handleChange} />
-                </Form.Item>
                 <Form.Item label="Mô tả">
                     <Input name='movieDescription' onChange={formik.handleChange} />
-                </Form.Item>
-                <Form.Item label="Ngày khởi chiếu">
-                    <DatePicker format={'DD/MM/YYYY'} name='scheduleDate' onChange={handleChangeDatePicker} />
-                </Form.Item>
-                <Form.Item label="Đang chiếu" valuePropName="checked">
-                    <Switch onChange={handleChangeSwitch('dangChieu')} />
-                </Form.Item>
-                <Form.Item label="Sắp chiếu" valuePropName="checked">
-                    <Switch onChange={handleChangeSwitch('sapChieu')} />
                 </Form.Item>
                 <Form.Item label="Thời lượng (phút)">
                     <InputNumber onChange={value => formik.setFieldValue('movieLength', value)} min={1} />
@@ -97,8 +63,19 @@ export default () => {
                 <Form.Item label="Số sao">
                     <InputNumber onChange={value => formik.setFieldValue('movieReview', value)} min={1} max={10} />
                 </Form.Item>
-                <Form.Item label="Hình ảnh">
-                    <input type="file" onChange={handleChangeFile} accept='image/png, image/jpeg, image/jpg, image/gif' />
+                <Form.Item label="Thể loại phim">
+                    <Input
+                        name='movieGenre'
+                        onChange={formik.handleChange}
+                        placeholder="Nhập thể loại phim"
+                    />
+                </Form.Item>
+                <Form.Item label="Hình ảnh (URL)">
+                    <Input
+                        name="moviePoster"
+                        onChange={handleChangeImageURL}
+                        placeholder="Nhập URL hình ảnh"
+                    />
                     <br />
                     {imgSrc && <img src={imgSrc} alt="poster preview" style={{ width: 150, height: 150 }} />}
                 </Form.Item>

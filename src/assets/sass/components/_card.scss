@@ -2,19 +2,22 @@
     .ant-card-body {
         padding: 18px;
 
-        .film-name-card{
+        .film-name-card {
             font-size: 14px;
-            @include responsive('xl'){
+
+            @include responsive('xl') {
                 font-size: 11px;
             }
-            @include responsive('md'){
+
+            @include responsive('md') {
                 font-size: 10px;
             }
-            
+
         }
+
         .flip-card {
             background-color: transparent;
-            height: 300px;
+            height: 350px;
             perspective: 1000px;
             cursor: pointer;
 
@@ -69,7 +72,8 @@
                             background-color: #f26b38;
                             border-color: #f26b38;
                         }
-                        @include responsive('xl'){
+
+                        @include responsive('xl') {
                             padding: 10px 30px;
                         }
                     }

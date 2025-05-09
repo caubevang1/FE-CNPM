@@ -14,7 +14,7 @@ class Register extends Component {
             nguoiDung: {
                 username: '',
                 password: '',
-                checkPassword: '', // Thêm trường này
+                checkPassword: '',
                 firstName: '',
                 lastName: '',
                 dateOfBirth: '',

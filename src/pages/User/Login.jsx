@@ -31,8 +31,8 @@ export default function Login() {
 
     const callApiLogin = async (userLogin) => {
         try {
+            console.log(userLogin);
             const apiLogin = await DangNhap(userLogin);
-
             // Lưu token vào localStorage
             if (apiLogin.data.body?.token) {
                 setLocalStorage(LOCALSTORAGE_USER, {

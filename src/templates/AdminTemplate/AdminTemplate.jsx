@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { getLocalStorage, removeLocalStorage } from '../../utils/config';
+import { removeLocalStorage } from '../../utils/config';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
 import useRoute from '../../hooks/useRoute';
 import { LayThongTinTaiKhoan } from '../../services/UserService';
@@ -22,25 +22,30 @@ export default function AdminTemplate() {
     const [collapsed, setCollapsed] = useState(false);
     const { navigate } = useRoute();
     const [isLoading, setIsLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
-        const token = getLocalStorage(LOCALSTORAGE_USER);
-        if (!token) {
-            navigate('/login');
-        } else if (token.username !== 'admin') {
-            navigate('/notfound');
-        } else {
-            const callApiThongTinNguoiDungCheckAdmin = async () => {
-                try {
-                    await LayThongTinTaiKhoan();
-                    setIsLoading(false);
-                } catch (error) {
-                    removeLocalStorage(LOCALSTORAGE_USER);
+        const fetchUserInfo = async () => {
+            try {
+                const res = await LayThongTinTaiKhoan();
+                const userData = res.data?.body || res.data?.content || res.data;
+
+                // Kiểm tra role có phải là admin không
+                const isAdmin = userData.roles?.some(role => role.name === 'ADMIN');
+
+                if (!isAdmin) {
                     navigate('/notfound');
+                } else {
+                    setUserInfo(userData);
+                    setIsLoading(false);
                 }
-            };
-            callApiThongTinNguoiDungCheckAdmin();
-        }
+            } catch (error) {
+                removeLocalStorage(LOCALSTORAGE_USER);
+                navigate('/notfound');
+            }
+        };
+
+        fetchUserInfo();
     }, [navigate]);
 
     return (
@@ -49,7 +54,6 @@ export default function AdminTemplate() {
                 <LoadingPage />
             ) : (
                 <>
-                    {/* Chỉ hiển thị trang admin khi màn hình >= 1280px */}
                     <div className='hidden xl:block'>
                         <Layout className='min-h-screen'>
                             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -107,13 +111,12 @@ export default function AdminTemplate() {
                                         minHeight: 500,
                                     }}
                                 >
-                                    <Outlet />
+                                    <Outlet context={userInfo} />
                                 </Content>
                             </Layout>
                         </Layout>
                     </div>
 
-                    {/* Màn hình nhỏ không vào admin */}
                     <div className="block xl:hidden">
                         <NotFound />
                     </div>

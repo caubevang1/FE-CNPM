@@ -9,7 +9,6 @@ import { SwalConfig } from '../../../utils/config';
 
 export default function Showtime() {
     const { param, navigate } = useRoute()
-    console.log(param)
     const [state, setState] = useState({
         heThongRapChieu: [],
         cumRapChieu: []

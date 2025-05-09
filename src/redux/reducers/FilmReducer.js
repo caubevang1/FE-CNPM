@@ -55,10 +55,15 @@ export const callApiFilm = async (dispatch) => {
 
 export const themPhimApi = async (formData) => {
     try {
+        console.log(formData)
         await themPhimUpload(formData)
         SwalConfig('Thêm phim thành công', 'success', true)
         history.push('/admin/film')
     } catch (error) {
+        console.log(error)
+        console.log(error.response.data.content)
+        console.log(error.response.data)
+        console.log(error.response)
         SwalConfig(`${error.response.data.content}`, 'error', true, 3000)
     }
 }

@@ -3,7 +3,6 @@ import { getLocalStorage } from '../../utils/config'
 
 export default function Dashboard() {
 	const nameAdmin = getLocalStorage('USER')
-	console.log(nameAdmin)
 	return (
 		<>
 			<h2 className='text-center font-bold text-2xl'>Hellu Admin: <span className='text-orange-600'>{nameAdmin.username}</span></h2>

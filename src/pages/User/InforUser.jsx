@@ -7,12 +7,13 @@ import moment from 'moment'
 import _ from "lodash";
 
 const ThongTinNguoiDung = (thongTinNguoiDung) => {
+    console.log('thongTinNguoiDung', thongTinNguoiDung);
     return <div className='h-[100vh] relative'>
         <section className="p-6 bg-gray-500 w-full md:w-[80%] lg:w-[60%] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-lg">
             <h2 className='text-white font-bold text-2xl mb-4'>Thông tin tài khoản</h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
                 <div>
-                    <p className='font-semibold text-[17px] mb-1'>Tài khoản</p>
+                    <p className='font-semibold text-[17px] mb-1'>Tên tài khoản</p>
                     <input readOnly type="text" value={thongTinNguoiDung?.username} className='p-2 border-none w-full rounded-sm text-[16px]' />
                 </div>
                 <div>
@@ -25,11 +26,16 @@ const ThongTinNguoiDung = (thongTinNguoiDung) => {
                 </div>
                 <div>
                     <p className='font-semibold text-[17px] mb-1'>Họ tên</p>
-                    <input readOnly type="text" value={thongTinNguoiDung?.hoTen} className='p-2 border-none w-full rounded-sm text-[16px]' />
+                    <input
+                        readOnly
+                        type="text"
+                        value={`${thongTinNguoiDung?.firstName} ${thongTinNguoiDung?.lastName}`}
+                        className='p-2 border-none w-full rounded-sm'
+                    />
                 </div>
                 <div>
                     <p className='font-semibold text-[17px] mb-1'>Loại tài khoản</p>
-                    <input readOnly type="text" value={thongTinNguoiDung?.roles} className='p-2 border-none w-full rounded-sm text-[16px]' />
+                    <input readOnly type="text" value={thongTinNguoiDung?.roles[0]?.name} className='p-2 border-none w-full rounded-sm text-[16px]' />
                 </div>
             </div>
         </section>

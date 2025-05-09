@@ -8,13 +8,6 @@ import { LOCALSTORAGE_USER } from '../../utils/constant';
 import { history } from '../../utils/history';
 
 const thongTinTaiKhoan = {
-    // accessToken: '',
-    // email: '',
-    // hoTen: '',
-    // roles: '',
-    // maNhom: '',
-    // phoneNumber: '',
-    // username: ''
     ID: '',
     username: '',
     firstName: '',
@@ -25,8 +18,7 @@ const thongTinTaiKhoan = {
     gender: 0,
     avatar: '',
     point: 0,
-    roles: 'ADMIN',
-    roles: 'admin',
+    roles: [],
     hoTen: '',
 }
 

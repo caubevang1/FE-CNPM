@@ -1,40 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react';
 import { Table, Input, Button, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { callApiFilm, callApiXoaPhim } from '../../../redux/reducers/FilmReducer';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, CalendarOutlined } from '@ant-design/icons';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { debounce } from 'lodash';
 
 const { Search } = Input;
 
 export default function Film() {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { arrFilm } = useSelector(state => state.FilmReducer)
-    const [data, setData] = useState([])
+    const dispatch = useDispatch();
+    const { arrFilm } = useSelector(state => state.FilmReducer);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        dispatch(callApiFilm)
-    }, [])
+        dispatch(callApiFilm);
+    }, [dispatch]);
 
     useEffect(() => {
-        setData(arrFilm)
-    }, [arrFilm])
+        setData(arrFilm);
+    }, [arrFilm]);
 
-    const searchKeyword = (value) => {
-        setData(arrFilm.filter(item => {
-            if (value.trim() === '') {
-                return item
-            }
-            else {
-                let keyLower = value.toLocaleLowerCase()
-                let itemLower = item.movieName.toLocaleLowerCase()
-                return itemLower.includes(keyLower)
-            }
-        }))
-    }
+    // Hàm tìm kiếm với debounce
+    const searchKeyword = useCallback(
+        debounce((value) => {
+            setData(arrFilm.filter(item => {
+                if (value.trim() === '') {
+                    return item;
+                } else {
+                    let keyLower = value.toLowerCase();
+                    let itemLower = item.movieName.toLowerCase();
+                    return itemLower.includes(keyLower);
+                }
+            }));
+        }, 200),  // 500ms là thời gian debounce
+        [arrFilm]
+    );
+
     const columns = [
         {
             title: 'Mã phim',
@@ -47,12 +51,10 @@ export default function Film() {
             title: 'Hình ảnh',
             dataIndex: 'moviePoster',
             render: (text, film, index) => {
-                return <>
-                    <img src={film.moviePoster} alt={film.moviePoster} width='50' height='50'
-                        onError={(e) => { e.target.onError = null; e.target.src = `https://picsum.photos/id/${index}/50/50` }} />
-                </>
+                return <img src={film.moviePoster} alt={film.moviePoster} width='50' height='50'
+                    onError={(e) => { e.target.onError = null; e.target.src = `https://picsum.photos/id/${index}/50/50`; }} />;
             },
-            width: 100
+            width: 100,
         },
         {
             title: 'Tên phim',
@@ -61,12 +63,12 @@ export default function Film() {
                 let tenPhimA = a.movieName.toLowerCase().trim();
                 let tenPhimB = b.movieName.toLowerCase().trim();
                 if (tenPhimA > tenPhimB) {
-                    return 1
+                    return 1;
                 }
-                return -1
+                return -1;
             },
             render: (text, film) => {
-                return film.movieName.length > 50 ? film.movieName.slice(0, 50) + '...' : film.movieName
+                return film.movieName.length > 50 ? film.movieName.slice(0, 50) + '...' : film.movieName;
             },
             sortDirections: ['descend'],
         },
@@ -77,12 +79,12 @@ export default function Film() {
                 let moTaA = a.movieDescription.toLowerCase().trim();
                 let moTaB = b.movieDescription.toLowerCase().trim();
                 if (moTaA > moTaB) {
-                    return 1
+                    return 1;
                 }
-                return -1
+                return -1;
             },
             render: (text, film) => {
-                return film.movieDescription.length > 80 ? film.movieDescription.slice(0, 80) + '...' : film.movieDescription
+                return film.movieDescription.length > 80 ? film.movieDescription.slice(0, 80) + '...' : film.movieDescription;
             },
             sortDirections: ['descend'],
         },
@@ -92,7 +94,9 @@ export default function Film() {
             render: (text, film) => {
                 return <>
                     <Tooltip placement="leftBottom" title={'Chỉnh sửa phim'}>
-                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl ' to={`/admin/film/edit/${film.movieId}`}><EditOutlined /></NavLink>
+                        <NavLink key={1} className='bg-dark text-blue-600 mr-3 text-2xl' to={`/admin/film/edit/${film.movieId}`}>
+                            <EditOutlined />
+                        </NavLink>
                     </Tooltip>
                     <Tooltip placement="bottom" title={'Xóa phim'}>
                         <button onClick={() => {
@@ -103,36 +107,38 @@ export default function Film() {
                                 denyButtonText: 'Hủy',
                                 icon: 'question',
                                 iconColor: 'rgb(104 217 254)',
-                                confirmButtonColor: '#f97316'
+                                confirmButtonColor: '#f97316',
                             }).then((result) => {
-                                console.log(result);
                                 if (result.isConfirmed) {
-                                    dispatch(callApiXoaPhim(film.movieId))
+                                    dispatch(callApiXoaPhim(film.movieId));
                                 }
-                            })
-                        }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'><DeleteOutlined /></button>
+                            });
+                        }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'>
+                            <DeleteOutlined />
+                        </button>
                     </Tooltip>
                     <Tooltip placement="topRight" title={'Tạo lịch chiếu'}>
-                        <NavLink key={3} className='bg-dark text-orange-600 hover:text-orange-400 ml-3 text-2xl ' to={`/admin/film/showtime/${film.movieId}/${film.movieName}`}><CalendarOutlined /></NavLink>
+                        <NavLink key={3} className='bg-dark text-orange-600 hover:text-orange-400 ml-3 text-2xl' to={`/admin/film/showtime/${film.movieId}/${film.movieName}`}>
+                            <CalendarOutlined />
+                        </NavLink>
                     </Tooltip>
-                </>
+                </>;
             },
-            width: 150
+            width: 150,
         },
     ];
-    return <div className='adminFilm'>
-        <h2 className='text-2xl uppercase font-bold mb-4'>Quản lý Phim</h2>
 
-        <Button onClick={() => navigate('/admin/film/addnewfilm')} className='mb-4 font-semibold border-black'>Thêm phim</Button>
-
-        <Search
-            className='mb-4'
-            placeholder="Tìm kiếm theo tên"
-            enterButton='Search'
-            size="large"
-            onSearch={searchKeyword}
-        />
-
-        <Table columns={columns} dataSource={data} rowKey='movieId' />
-    </div>;
-};
+    return (
+        <div className='adminFilm'>
+            <h2 className='text-2xl uppercase font-bold mb-4'>Quản lý Phim</h2>
+            <Search
+                className='mb-4'
+                placeholder="Tìm kiếm theo tên"
+                enterButton='Search'
+                size="large"
+                onChange={(e) => searchKeyword(e.target.value)}
+            />
+            <Table columns={columns} dataSource={data} rowKey='movieId' />
+        </div>
+    );
+}

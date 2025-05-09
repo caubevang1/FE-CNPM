@@ -52,6 +52,8 @@ export default () => {
     });
 
     return (
+        console.log(thongTinNguoiDungEdit),
+        console.log(danhSachLoaiNguoiDung),
         <div className='addFilmAdmin'>
             <h2 className='text-xl uppercase font-bold mb-4'>Edit User</h2>
             <Form
@@ -114,7 +116,8 @@ export default () => {
                         onChange={(value) => formik.setFieldValue("roles", [value])}
                     >
                         {danhSachLoaiNguoiDung?.map((item, index) => (
-                            <Select.Option key={index} value={item.maLoaiNguoiDung}>
+                            console.log(item),
+                            <Select.Option key={index} value={item.name}>
                                 {item.tenLoai}
                             </Select.Option>
                         ))}
