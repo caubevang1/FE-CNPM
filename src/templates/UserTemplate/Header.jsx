@@ -85,7 +85,7 @@ const Header = () => {
         );
 
         return (
-            <Dropdown overlay={menu} placement="bottomCenter" arrow>
+            <Dropdown overlay={menu} placement="bottom" arrow>
                 <div className="cursor-pointer flex items-center space-x-2">
                     <div className="relative bg-transparent rounded-full">
                         <img

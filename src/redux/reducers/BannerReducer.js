@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import diaDao from '../../assets/img/diaDao.jpg'
 import thamTuKien from '../../assets/img/thamTuKien.jpg'
-import transformer from '../../assets/img/transformer1.jpg'
+import transformer from '../../assets/img/transformer3.jpg'
 
 const initialState = {
     data: [
@@ -17,7 +17,7 @@ const initialState = {
         },
         {
             maBanner: 3,
-            link: 'https://www.youtube.com/watch?v=MQkxAmkOkxs',
+            link: 'https://www.youtube.com/watch?v=JOQrn9AToag&pp=ygUbdGhlIGxhc3Qga25pZ2h0IHRyYWlsZXIgY2d20gcJCYYJAYcqIYzv',
             img: transformer
         },
     ],

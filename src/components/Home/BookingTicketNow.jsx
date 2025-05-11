@@ -3,6 +3,7 @@ import moment from 'moment';
 import { LayThongTinLichChieu } from '../../services/CinemaService';
 import useRoute from '../../hooks/useRoute';
 import { SwalConfig } from '../../utils/config';
+import { layThongTinPhong } from '../../services/CinemaService';
 
 export default function BookingTicketNow(props) {
     const { navigate } = useRoute();
@@ -109,6 +110,7 @@ export default function BookingTicketNow(props) {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (state.lichChieuDangChon && state.lichChieuDangChon !== 'Ngày giờ chiếu') {
+            console.log(state.danhSachDuLieu.lichChieu[0].movieName);
             navigate(`booking/${state.lichChieuDangChon}`);
         } else {
             SwalConfig('Vui lòng chọn đầy đủ thông tin', 'error', true);

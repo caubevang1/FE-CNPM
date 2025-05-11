@@ -5,10 +5,12 @@ export const LayThongTinLichChieuHeThongRap = () => http.get(`/schedule`)
 
 export const LayThongTinLichChieu = () => http.get(`/schedule`)
 
-// export const LayThongTinLichChieu = (movieId) => http.get(`/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${movieId}`)
+export const LayThongTinLichChieuChiTiet = (scheduleId) => http.get(`/schedule/${scheduleId}`)
 
-export const layThongTinHeThongRap = () => http.get(`/cinemas`)
+// export const layThongTinHeThongRap = () => http.get(`/cinemas`)
 
 export const layThongTinCumRap = () => http.get(`/cinemas`)
 
-export const layThongTinCumRapTheoHeThong = (maHeThongRap) => http.get(`/QuanLyRap/LayThongTinCumRapTheoHeThong?maHeThongRap=${maHeThongRap}`)
+export const layThongTinCumRapTheoHeThong = () => http.get(`/cinemas`)
+
+export const layThongTinPhong = () => http.get(`/rooms`)

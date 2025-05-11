@@ -281,6 +281,7 @@ const BookingTicketPage = () => {
         } else {
             dispatch(callApiThongTinNguoiDung);
             const callApiPhongVe = async () => {
+                console.log('param', param);
                 const result = await LayDanhSachPhongVeService(param.id);
                 dispatch(layDanhSachPhongVe(result.data.content));
                 setIsLoading(false);

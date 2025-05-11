@@ -10,5 +10,5 @@ export const themPhimUpload = (formData) => http.post(`/movies`, formData)
 
 export const capNhatPhimUpload = (formData, id) => http.put(`/movies/${id}`, formData)
 
-export const xoaPhim = (username) => http.delete(`/movies/${username}`)
+export const xoaPhim = (id) => http.delete(`/movies/${id}`)
 

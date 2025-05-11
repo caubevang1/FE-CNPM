@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { LayThongTinLichChieu } from '../../services/CinemaService';
+import { LayThongTinLichChieu, LayThongTinLichChieuChiTiet } from '../../services/CinemaService';
 import { capNhatPhimUpload, LayDanhSachPhim, LayThongTinPhimChiTiet, themPhimUpload, xoaPhim } from '../../services/FilmService';
 import { SwalConfig } from '../../utils/config';
 import { history } from '../../utils/history'
@@ -37,8 +37,11 @@ export default FilmReducer.reducer
 
 export const callApiLichChieuTheoPhim = (value) => async (dispatch) => {
     try {
-        const apiLichChieu = await LayThongTinLichChieu(value)
-        dispatch(getLichChieuTheoPhim(apiLichChieu.data.content))
+        console.log(value)
+        const apiLichChieu = await LayThongTinLichChieuChiTiet(value)
+        console.log(apiLichChieu.data.content)
+        console.log(apiLichChieu.data)
+        dispatch(getLichChieuTheoPhim(apiLichChieu.data))
     } catch (error) {
         console.log(error)
     }
@@ -55,15 +58,10 @@ export const callApiFilm = async (dispatch) => {
 
 export const themPhimApi = async (formData) => {
     try {
-        console.log(formData)
         await themPhimUpload(formData)
         SwalConfig('Thêm phim thành công', 'success', true)
         history.push('/admin/film')
     } catch (error) {
-        console.log(error)
-        console.log(error.response.data.content)
-        console.log(error.response.data)
-        console.log(error.response)
         SwalConfig(`${error.response.data.content}`, 'error', true, 3000)
     }
 }
