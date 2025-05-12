@@ -106,7 +106,9 @@ export const capNhatNguoiDung = (user) => async (dispatch) => {
         await CapNhatThongTinNguoiDung(user)
         SwalConfig('Cập nhật thành công', 'success', true)
         dispatch(callApiUser)
-        history.push('/admin/user')
+        if (window.location.pathname.includes('/admin')) {
+            history.push('/admin/user');
+        }
     } catch (error) {
         console.log(error)
         SwalConfig(`${error?.response?.data?.content || 'Lỗi hệ thống'}`, 'error', true, 3000)

@@ -87,11 +87,11 @@ const Header = () => {
         return (
             <Dropdown overlay={menu} placement="bottom" arrow>
                 <div className="cursor-pointer flex items-center space-x-2">
-                    <div className="relative bg-transparent rounded-full">
+                    <div className="relative bg-transparent rounded-full overflow-hidden w-[60px] h-[60px] mr-[40px]">
                         <img
                             src={avatarUrl}
                             alt="User Avatar"
-                            className="w-[60px] h-[60px] mr-[40px] rounded-full  bg-transparent"
+                            className="w-full h-full object-cover object-center" // Sử dụng object-cover và object-center để crop ảnh
                         />
                     </div>
                 </div>
