@@ -97,13 +97,15 @@ export default function Detail() {
                                 alt={filmDetail.movieName}
                             />
                             <div className="md:pl-8">
-                                <h2 className="text-white tracking-wide text-[1rem] md:text-[1.3rem] lg:text-[1.5rem] uppercase mb-3 font-semibold">
+                                <h2 className="text-white tracking-wide !text-[40px] md:text-[1.3rem] lg:text-[1.5rem] uppercase mb-3 font-semibold">
                                     {filmDetail.movieName}
                                 </h2>
-                                <div className="flex items-center text-gray-300 mb-2">
-                                    <p className="mr-4">{moment(filmDetail.scheduleDate).format('DD-MM-YYYY')}</p>
-                                    <p className="mr-4">{filmDetail.movieGenre}</p>
-                                    <p>{filmDetail.movieLength} phút</p>
+                                <div className="flex items-center text-white mb-2 space-x-2 !text-[18px]">
+                                    <span>{moment(filmDetail.scheduleDate).format('DD-MM-YYYY')}</span>
+                                    <span>•</span>
+                                    <span>{filmDetail.movieGenre}</span>
+                                    <span>•</span>
+                                    <span>{filmDetail.movieLength} phút</span>
                                 </div>
 
                                 <div className="mt-4 xl:mt-0 flex items-center">
@@ -116,14 +118,35 @@ export default function Detail() {
                                         }}
                                     >
                                         {/* Vòng Progress */}
-                                        <Progress
-                                            trailColor="#e6f4ff"
-                                            status="success"
-                                            type="circle"
-                                            percent={percent}
-                                            format={(percent) => `${percent} Điểm`}
-                                            style={{ marginRight: '10px' }} // Khoảng cách giữa vòng progress và các chữ
-                                        />
+                                        <div
+                                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                            style={{
+                                                display: 'inline-block',
+                                                transition: 'transform 0.3s ease',
+                                            }}
+                                        >
+                                            <Progress
+                                                type="circle"
+                                                percent={Math.round(percent)}
+                                                format={(percent) => (
+                                                    <span style={{ color: 'white', fontWeight: 'bold', fontSize: '40px' }}>
+                                                        {percent}
+                                                        <sup style={{ fontSize: '40%', verticalAlign: 'middle' }}>%</sup>
+                                                    </span>
+                                                )}
+                                                strokeColor="#1AA25F"
+                                                trailColor="#204529"
+                                                style={{
+                                                    marginRight: '10px',
+                                                    boxShadow: '0 0 12px #081C22',
+                                                    borderRadius: '50%',
+                                                    padding: '7px',
+                                                    background: '#081C22',
+                                                }}
+                                            />
+                                        </div>
+
 
                                         {/* Dòng "User" và "Score" */}
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -153,10 +176,8 @@ export default function Detail() {
 
                                 <div className="mt-6">
                                     <h3 className="text-white font-bold text-xl mb-3">Description</h3>
-                                    <p className="text-gray-300 tracking-wide text-justify">
-                                        {filmDetail.movieDescription.length > 300
-                                            ? filmDetail.movieDescription.slice(0, 300) + '...'
-                                            : filmDetail.movieDescription}
+                                    <p className="text-white tracking-wide text-justify !text-[18px]">
+                                        {filmDetail.movieDescription}
                                     </p>
                                 </div>
                                 <div className="mt-4 xl:hidden">
@@ -177,7 +198,8 @@ export default function Detail() {
                             {filteredShowtimes.length > 0 ? (
                                 <ShowtimeDetail heThongRapChieu={filteredShowtimes} />
                             ) : (
-                                <p className="text-white">Không có lịch chiếu cho bộ phim này.</p>
+                                <p className="text-white text-[20px] flex justify-center font-bold">Không có lịch chiếu cho bộ phim này.</p>
+
                             )}
                         </div>
                     </div>

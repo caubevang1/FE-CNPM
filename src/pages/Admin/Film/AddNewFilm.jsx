@@ -25,9 +25,6 @@ export default () => {
                 const payload = {
                     ...value,
                 };
-
-                console.log(payload);
-                // Dispatch action với payload JSON
                 dispatch(themPhimApi(payload));
 
                 setImgSrc(''); // Xóa preview hình ảnh sau khi gửi
@@ -61,7 +58,7 @@ export default () => {
                     <InputNumber onChange={value => formik.setFieldValue('movieLength', value)} min={1} />
                 </Form.Item>
                 <Form.Item label="Số sao">
-                    <InputNumber onChange={value => formik.setFieldValue('movieReview', value)} min={1} max={10} />
+                    <InputNumber onChange={value => formik.setFieldValue('movieReview', value)} min={1} max={5} />
                 </Form.Item>
                 <Form.Item label="Thể loại phim">
                     <Input

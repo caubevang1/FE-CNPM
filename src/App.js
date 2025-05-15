@@ -20,6 +20,9 @@ import EditFilm from './pages/Admin/Film/EditFilm';
 import EditUser from './pages/Admin/Users/EditUser';
 import ForgotPassword from './pages/User/ForgotPassword';
 import ResetPassword from './pages/User/ResetPassword';
+import AddCinema from './pages/Admin/Cinema/AddCinema';
+import Cinema from './pages/Admin/Cinema/Cinema';
+import EditCinema from './pages/Admin/Cinema/EditCinema';
 
 function App() {
     return (
@@ -37,7 +40,7 @@ function App() {
                     <Route path='news' element={<News />} />
                     <Route path='booking/:id' element={<BookingTicket />} />
                     <Route path="/forget-password" element={<ForgotPassword />} />
-                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="reset-password/:otp" element={<ResetPassword />} />
                 </Route>
                 <Route path='/admin' element={<AdminTemplate />}>
                     <Route path='/admin' index element={<Dashboard />} />
@@ -48,6 +51,10 @@ function App() {
                     <Route path='film/showtime/:id/:movieName' element={<Showtime />} />
                     <Route path='film/addnewfilm' element={<AddNewFilm />} />
                     <Route path='showtime' element={<Showtime />} />
+                    <Route path='cinema/addnewcinema' element={<AddCinema />} />
+                    <Route path='cinema' element={<Cinema />} />
+                    <Route path='cinema/edit/:cinemaId' element={<EditCinema />} />
+                    <Route path='testcinema' element={<AddCinema />} />
                 </Route>
             </Routes>
         </HistoryRouter>

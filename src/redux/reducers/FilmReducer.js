@@ -37,10 +37,7 @@ export default FilmReducer.reducer
 
 export const callApiLichChieuTheoPhim = (value) => async (dispatch) => {
     try {
-        console.log(value)
         const apiLichChieu = await LayThongTinLichChieuChiTiet(value)
-        console.log(apiLichChieu.data.content)
-        console.log(apiLichChieu.data)
         dispatch(getLichChieuTheoPhim(apiLichChieu.data))
     } catch (error) {
         console.log(error)
@@ -79,8 +76,6 @@ export const callApiThongTinPhim = (movieId) => async (dispatch) => {
 
 export const capNhatPhim = async (formData, id) => {
     try {
-        console.log(formData)
-        console.log(id)
         await capNhatPhimUpload(formData, id)
         SwalConfig('Cập nhật thành công', 'success', true)
         history.push('/admin/film')

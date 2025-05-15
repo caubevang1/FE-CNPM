@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const ThongTinPhim = {
     movieId: '',
-    tenCumRap: '',
+    cinemaName: '',
     tenRap: '',
-    diaChi: '',
+    cinemaAddress: '',
     movieName: '',
     moviePoster: '',
-    ngayChieu: '',
-    gioChieu: ''
+    scheduleDate: '',
+    scheduleStart: ''
 }
 
 const Ghe = {
@@ -17,9 +17,9 @@ const Ghe = {
     seatPrice: '',
     seatType: '',
     seatId: '',
-    maRap: '',
+    cinemaId: '',
     seatNumber: '',
-    taiKhoanNguoiDat: '',
+    username: '',
     seatRow: ''
 }
 

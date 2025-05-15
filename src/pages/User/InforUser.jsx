@@ -6,7 +6,6 @@ import { Tabs } from 'antd';
 import moment from 'moment';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 
-// Thêm vào trong ThongTinNguoiDung
 const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
     const [isEditing, setIsEditing] = useState({
         username: false,
@@ -39,15 +38,15 @@ const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
         dateOfBirth: useRef(null),
         avatar: useRef(null),
         save: useRef(null),
-        firstName: useRef(null),  // ref riêng cho firstName
-        lastName: useRef(null),   // ref riêng cho lastName
+        firstName: useRef(null),
+        lastName: useRef(null),
     };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setEditData(prev => ({
             ...prev,
-            [name]: value,
+            [name]: name === "gender" ? parseInt(value, 10) : value,
         }));
     };
 
@@ -96,7 +95,7 @@ const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
                 username: thongTinNguoiDung.username || '',
                 email: thongTinNguoiDung.email || '',
                 phoneNumber: thongTinNguoiDung.phoneNumber || '',
-                gender: thongTinNguoiDung.gender ?? 2,
+                gender: thongTinNguoiDung.gender ?? '',
                 dateOfBirth: thongTinNguoiDung.dateOfBirth || '',
             });
             setAvatarUrl(thongTinNguoiDung.avatar || '');
@@ -107,7 +106,6 @@ const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
         const handleClickOutside = (e) => {
             for (const field in isEditing) {
                 if (isEditing[field]) {
-                    // Nếu là "name", cần kiểm tra cả firstName và lastName
                     if (field === "name") {
                         const clickedInsideFirst = refs.firstName?.current?.contains(e.target);
                         const clickedInsideLast = refs.lastName?.current?.contains(e.target);
@@ -116,7 +114,6 @@ const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
                             setIsEditing(prev => ({ ...prev, name: false }));
                         }
                     } else {
-                        // Các trường khác xử lý như cũ
                         if (
                             refs[field]?.current &&
                             !refs[field].current.contains(e.target) &&
@@ -139,7 +136,7 @@ const ThongTinNguoiDung = ({ thongTinNguoiDung }) => {
             </div>
             <div className="content relative max-w-5xl mx-auto px-6 py-6 bg-white rounded-2xl shadow-lg">
                 <div className="absolute top-4 right-4 flex items-center gap-3 text-white text-sm">
-                    <span style={{ padding: '6px 12px', fontSize: '25px', marginRight: '10px', marginTop: '12px' }}>
+                    <span style={{ padding: '6px 12px', fontSize: '25px', marginRight: '10px', marginTop: '15px' }}>
                         <span style={{ color: '#000' }}>Hello, </span>
                         <span style={{ color: '#3258F4' }}>{editData.username}</span>
                         <span style={{ color: '#000' }}> !</span>
@@ -386,7 +383,7 @@ const InforUser = () => {
 
     const items = [
         {
-            label: <span className="text-[15px] sm:text-[20px] font-bold">Thông tin tài khoản</span>,
+            label: <span className="text-[15px] sm:text-[20px] font-bold ml-2">Thông tin tài khoản</span>,
             key: 1,
             children: <ThongTinNguoiDung thongTinNguoiDung={thongTinNguoiDung} />,
         },

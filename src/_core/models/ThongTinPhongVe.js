@@ -7,11 +7,11 @@ export class ThongTinPhim {
     movieId = '';
     tenCumRap = '';
     tenRap = '';
-    diaChi = '';
+    cinemaAddress = '';
     movieName = '';
     moviePoster = '';
-    ngayChieu = '';
-    gioChieu = ''
+    scheduleDate = '';
+    scheduleStart = ''
 }
 
 export class Ghe {
@@ -19,8 +19,8 @@ export class Ghe {
     seatPrice = '';
     seatType = '';
     seatId = '';
-    maRap = '';
+    cinemaId = '';
     seatNumber = '';
-    taiKhoanNguoiDat = '';
+    username = '';
     seatRow = ''
 }

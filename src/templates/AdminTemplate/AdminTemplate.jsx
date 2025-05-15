@@ -4,7 +4,7 @@ import {
     MenuUnfoldOutlined,
     UserOutlined,
     SnippetsOutlined,
-    FileAddOutlined
+    FileAddOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -87,6 +87,23 @@ export default function AdminTemplate() {
                                                     key: '22',
                                                     icon: <FileAddOutlined />,
                                                     label: <NavLink to='film/addnewfilm'>Add Film</NavLink>,
+                                                },
+                                            ]
+                                        },
+                                        {
+                                            key: '3',
+                                            icon: <SnippetsOutlined />,
+                                            label: 'Cinema',
+                                            children: [
+                                                {
+                                                    key: '23',
+                                                    icon: <SnippetsOutlined />,
+                                                    label: <NavLink to='cinema'>Cinema Manager</NavLink>,
+                                                },
+                                                {
+                                                    key: '24',
+                                                    icon: <FileAddOutlined />,
+                                                    label: <NavLink to='/admin/cinema/addnewcinema'>Add Cinema</NavLink>,
                                                 },
                                             ]
                                         },

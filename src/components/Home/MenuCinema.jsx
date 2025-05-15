@@ -83,7 +83,7 @@ export default function MenuCinema() {
                                         onClick={() => navigate(`booking/${lichChieu.movieName}`)}
                                         className="bg-gray-100 hover:bg-gray-300 border-2 text-white font-bold py-2 px-4 rounded"
                                     >
-                                        <span className="text-green-500">
+                                        <span className="text-green-500 text-sm">
                                             {moment(lichChieu.scheduleDate).format('DD-MM-YYYY ~ ')}
                                         </span>
                                         <span className="text-orange-500">

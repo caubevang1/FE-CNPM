@@ -8,17 +8,16 @@ import { layThongTinCumRap, LayThongTinLichChieu } from '../../services/CinemaSe
 export default function ShowtimeDetail() {
     const { navigate } = useRoute();
     const location = useLocation();
-    const movieName = location.state?.movieName || ''; // Lấy movieName từ route state
+    const movieName = location.state?.movieName || '';
 
     const [cumRapChieu, setCumRapChieu] = useState([]);
     const [lichChieu, setLichChieu] = useState([]);
 
-    // Lấy dữ liệu khi có movieName
     useEffect(() => {
         const fetchData = async () => {
             const lichChieuRes = await LayThongTinLichChieu();
             const filteredLichChieu = lichChieuRes.data.filter(
-                (lich) => lich.movieName === movieName // Chỉ lọc lịch chiếu của phim hiện tại
+                (lich) => lich.movieName === movieName
             );
             setLichChieu(filteredLichChieu);
 
@@ -31,10 +30,9 @@ export default function ShowtimeDetail() {
         }
     }, [movieName]);
 
-    // Render lịch chiếu cho từng rạp
     const renderDanhSachLichChieu = (cinemaName) => {
         return lichChieu
-            .filter(lich => lich.cinemaName === cinemaName) // Chỉ lọc lịch chiếu của rạp đó
+            .filter(lich => lich.cinemaName === cinemaName)
             .map((itemLichChieu) => ({
                 key: itemLichChieu.scheduleId,
                 scheduleDate: itemLichChieu.scheduleDate,
@@ -43,34 +41,23 @@ export default function ShowtimeDetail() {
                 label: (
                     <button
                         onClick={() => {
-                            // In ra thông tin trước khi navigate
-                            console.log(`Navigating to booking page with scheduleId: ${itemLichChieu.scheduleId}`);
-                            console.log(`Movie Name: ${movieName}`);
-
-                            // Chuyển hướng đến trang đặt vé
                             navigate(`/booking/${itemLichChieu.scheduleId}`);
                         }}
-                        className="bg-gray-100 mt-[-1rem] hover:bg-gray-300 border-2 text-white font-bold py-2 px-4 rounded inline-block"
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300"
                     >
-                        <span className="text-green-500">
-                            {moment(itemLichChieu.scheduleDate).format('DD-MM-YYYY ~ ')}
-                        </span>
-                        <span className="text-orange-500">
-                            {moment(`${itemLichChieu.scheduleDate} ${itemLichChieu.scheduleStart}`).format('HH:mm')} - {moment(`${itemLichChieu.scheduleDate} ${itemLichChieu.scheduleEnd}`).format('HH:mm')}
-                        </span>
+                        Đặt vé
                     </button>
                 ),
             }));
     };
 
-    // Render các cụm rạp và lịch chiếu của chúng
     const renderCumRap = () => {
         return cumRapChieu
             .filter((itemRap) =>
-                lichChieu.some((lich) => lich.cinemaName === itemRap.cinemaName) // Kiểm tra xem rạp có lịch chiếu cho phim này không
+                lichChieu.some((lich) => lich.cinemaName === itemRap.cinemaName)
             )
             .map((itemRap, iCumRap) => {
-                const lichChieuItems = renderDanhSachLichChieu(itemRap.cinemaName); // Lọc lịch chiếu của rạp
+                const lichChieuItems = renderDanhSachLichChieu(itemRap.cinemaName);
 
                 return {
                     label: (
@@ -86,27 +73,19 @@ export default function ShowtimeDetail() {
                             items={lichChieuItems.map((itemLich) => ({
                                 key: itemLich.key,
                                 label: (
-                                    <>
-                                        <span className="text-green-500">
-                                            {moment(itemLich.scheduleDate).format('DD-MM-YYYY ~ ')}
-                                        </span>
-                                        <span className="text-orange-500">
-                                            {moment(`${itemLich.scheduleDate} ${itemLich.scheduleStart}`).format('HH:mm')} - {moment(`${itemLich.scheduleDate} ${itemLich.scheduleEnd}`).format('HH:mm')}
-                                        </span>
-                                    </>
+                                    <span>
+                                        {moment(itemLich.scheduleDate).format('DD-MM-YYYY')} -{' '}
+                                        {moment(`${itemLich.scheduleDate} ${itemLich.scheduleStart}`).format('HH:mm')}
+                                    </span>
                                 ),
                                 children: (
                                     <button
                                         onClick={() => {
-                                            // In ra thông tin trước khi navigate
-                                            console.log(`Navigating to booking page with scheduleId: ${itemLich.key}`);
-
-                                            // Chuyển hướng đến trang đặt vé
                                             navigate(`/booking/${itemLich.key}`);
                                         }}
-                                        className="bg-gray-100 mt-[-1rem] hover:bg-gray-300 border-2 text-white font-bold py-2 px-4 rounded inline-block"
+                                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300"
                                     >
-                                        {moment(`${itemLich.scheduleDate} ${itemLich.scheduleStart}`).format('HH:mm')} - {moment(`${itemLich.scheduleDate} ${itemLich.scheduleEnd}`).format('HH:mm')}
+                                        Đặt vé
                                     </button>
                                 ),
                             }))}
@@ -140,20 +119,12 @@ export default function ShowtimeDetail() {
                                         <button
                                             key={iLich}
                                             onClick={() => {
-                                                // In ra thông tin trước khi navigate
-                                                console.log(`Navigating to booking page with scheduleId: ${itemLich.key}`);
 
-                                                // Chuyển hướng đến trang đặt vé
                                                 navigate(`/booking/${itemLich.key}`);
                                             }}
-                                            className="bg-gray-100 hover:bg-gray-300 border-2 text-white font-bold py-1 rounded"
+                                            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300 w-full"
                                         >
-                                            <span className="text-green-500">
-                                                {moment(itemLich.scheduleDate).format('DD-MM-YYYY ~ ')}
-                                            </span>
-                                            <span className="text-orange-500">
-                                                {moment(`${itemLich.scheduleDate} ${itemLich.scheduleStart}`).format('HH:mm')} - {moment(`${itemLich.scheduleDate} ${itemLich.scheduleEnd}`).format('HH:mm')}
-                                            </span>
+                                            Đặt vé
                                         </button>
                                     ))}
                                 </div>

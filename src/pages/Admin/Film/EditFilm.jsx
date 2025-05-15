@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { callApiThongTinPhim, capNhatPhim } from '../../../redux/reducers/FilmReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { GROUPID } from '../../../utils/constant';
 import useRoute from '../../../hooks/useRoute';
 
 export default () => {
@@ -29,8 +28,6 @@ export default () => {
             movieLength: thongTinPhim.movieLength || '',
         },
         onSubmit: (value) => {
-            console.log(value);
-
             // Gửi trực tiếp dữ liệu JSON thay vì FormData
             const updatedMovie = {
                 movieId: value.movieId,
@@ -86,7 +83,7 @@ export default () => {
                     <InputNumber
                         onChange={value => formik.setFieldValue('movieReview', value)}
                         min={1}
-                        max={10}
+                        max={5}
                         value={formik.values.movieReview}
                     />
                 </Form.Item>

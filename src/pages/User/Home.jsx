@@ -34,8 +34,6 @@ export default function Home() {
             }
         };
         getApiHeThongRapChieu();
-
-        // Cleanup listener on unmount
         return () => {
             unlisten();
         };

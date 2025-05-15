@@ -91,7 +91,6 @@ class Register extends Component {
         const required = ['username', 'password', 'checkPassword', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'email', 'phoneNumber'];
         const filled = required.every(key => nguoiDung[key] !== '');
         if (filled && isValid) {
-            console.log(this.state.nguoiDung);
             this.callApiRegister();
         } else {
             SwalConfig('Vui lòng điền đầy đủ thông tin', 'info', false);

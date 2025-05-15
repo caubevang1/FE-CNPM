@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import moment from 'moment';
@@ -9,316 +9,235 @@ import useRoute from '../../hooks/useRoute';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
 import { getLocalStorage, SwalConfig } from '../../utils/config';
 import LoadingPage from '../LoadingPage';
-import {
-    LayDanhSachPhongVeService,
-    DatVe
-} from '../../services/BookingManager';
-import {
-    datGhe,
-    layDanhSachPhongVe,
-    xoaDanhSachGheDangDat
-} from '../../redux/reducers/BookingReducer';
+import { LayDanhSachPhongVeService, LayDanhSachGhe, DatVe } from '../../services/BookingManager';
+import { datGhe, layDanhSachPhongVe, xoaDanhSachGheDangDat } from '../../redux/reducers/BookingReducer';
 import { ThongTinDatVe } from '../../_core/models/ThongTinDatVe';
-import {
-    callApiThongTinNguoiDung,
-    setUserInfor
-} from '../../redux/reducers/UserReducer';
-import { LayThongTinTaiKhoan } from '../../services/UserService';
-
-const BookingTicket = (thongTinNguoiDung, id, setIsLoading) => {
-    const dispatch = useDispatch();
-    const { danhSachGhe, thongTinPhim } = useSelector(
-        (state) => state.BookingReducer.chiTietPhongVe
-    );
-    const { danhSachGheDangDat } = useSelector(
-        (state) => state.BookingReducer
-    );
-
-    const renderSeats = () => {
-        return danhSachGhe.map((itemGhe, index) => {
-            const sizeScreen = window.screen.width;
-            let size = 16;
-            const classGheVip = itemGhe.seatType === 'Vip' ? 'gheVip' : '';
-            const classGheDaDat = itemGhe.seatState === true ? 'gheDaDat' : '';
-            let classGheDangDat = '';
-            const seatState = itemGhe.seatState === true;
-
-            const indexGheDangDat = danhSachGheDangDat.findIndex(
-                (itemGheDangDat) => itemGheDangDat.seatId === itemGhe.seatId
-            );
-            if (indexGheDangDat !== -1) {
-                classGheDangDat = 'gheDangDat';
-            }
-
-            let classGheDaDuocTaiKhoanDat = '';
-            if (thongTinNguoiDung.username === itemGhe.taiKhoanNguoiDat) {
-                classGheDaDuocTaiKhoanDat = 'gheDaDuocTaiKhoanNayDat';
-            }
-
-            if (sizeScreen <= 1247 && sizeScreen > 1092) size = 14;
-            if (sizeScreen <= 1092 && sizeScreen > 783) size = 12;
-            if (sizeScreen <= 783 && sizeScreen > 650) size = 10;
-            if (sizeScreen <= 650 && sizeScreen > 530) size = 8;
-            if (sizeScreen <= 530 && sizeScreen > 390) size = 6;
-            if (sizeScreen <= 390) size = 4;
-
-            return (
-                <Fragment key={index}>
-                    <button
-                        disabled={seatState}
-                        onClick={() => dispatch(datGhe(itemGhe))}
-                        className={`ghe ${classGheVip} ${classGheDaDat} ${classGheDangDat} ${classGheDaDuocTaiKhoanDat}`}
-                    >
-                        {itemGhe.seatState ? (
-                            classGheDaDuocTaiKhoanDat === '' ? (
-                                <FontAwesomeIcon icon={faXmark} />
-                            ) : (
-                                <FontAwesomeIcon icon={faUserTag} />
-                            )
-                        ) : (
-                            itemGhe.seatNumber
-                        )}
-                    </button>
-                    {(index + 1) % size === 0 ? <br /> : ''}
-                </Fragment>
-            );
-        });
-    };
-
-    // const callApiDatVe = async () => {
-    //     try {
-    //         const thongTinDatVe = new ThongTinDatVe();
-    //         thongTinDatVe.movieId = id;
-    //         thongTinDatVe.danhSachVe = danhSachGheDangDat;
-
-    //         setIsLoading(true);
-    //         await DatVe(thongTinDatVe);
-    //         SwalConfig('Đặt vé thành công', 'success');
-
-    //         dispatch(xoaDanhSachGheDangDat());
-
-    //         const result = await LayDanhSachPhongVeService(id);
-    //         dispatch(layDanhSachPhongVe(result.data.content));
-
-    //         const apiNguoiDung = await LayThongTinTaiKhoan();
-    //         dispatch(setUserInfor(apiNguoiDung.data.content));
-    //         setIsLoading(false);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-
-    return (
-        <div className="min-h-[100vh]">
-            <div className="grid grid-cols-12 z-[1] pb-2">
-                <div className="col-span-12 xl:col-span-10 2xl:col-span-9">
-                    <div className="flex justify-center relative mb-2">
-                        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[2] uppercase font-bold tracking-wider text-white">
-                            Screen
-                        </div>
-                        <div className="trapezoid"></div>
-                    </div>
-                    <div className="text-center">{renderSeats()}</div>
-                    <div className="mt-5 md:flex md:justify-center hidden">
-                        <table className="divide-y divide-gray-200 w-full">
-                            <thead className="bg-gray-50 p-5">
-                                <tr>
-                                    <th>Ghế đã đặt</th>
-                                    <th>Ghế thường</th>
-                                    <th>Ghế vip</th>
-                                    <th>Ghế đang chọn</th>
-                                    <th>Ghế được tài khoản này đặt</th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                <tr className="text-center">
-                                    <td>
-                                        <button className="ghe gheDaDat">
-                                            <FontAwesomeIcon icon={faXmark} />
-                                        </button>
-                                    </td>
-                                    <td><button className="ghe"></button></td>
-                                    <td><button className="ghe gheVip"></button></td>
-                                    <td><button className="ghe gheDangDat"></button></td>
-                                    <td>
-                                        <button className="ghe gheDaDuocTaiKhoanNayDat">
-                                            <FontAwesomeIcon icon={faUserTag} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div className="col-span-12 xl:col-span-2 2xl:col-span-3">
-                    <h3 className="text-orange-500 text-center text-2xl">
-                        {danhSachGheDangDat
-                            .reduce((tong, ghe) => tong + ghe.seatPrice, 0)
-                            .toLocaleString()}{' '}
-                        VND
-                    </h3>
-                    <hr />
-                    <div className="my-5">
-                        <h3 className="text-lg mb-2 tracking-wide font-semibold">
-                            {thongTinPhim.movieName}
-                        </h3>
-                        <p className="mb-2">
-                            {thongTinPhim.tenCumRap} - {thongTinPhim.tenRap}
-                        </p>
-                        <p className="mb-2">Địa điểm: {thongTinPhim.diaChi}</p>
-                        <p>Ngày chiếu: {thongTinPhim.ngayChieu} </p>
-                    </div>
-                    <hr />
-                    <div className="flex flex-row my-5 items-center">
-                        <div className="flex flex-wrap items-center">
-                            <span className="text-black font-semibold text-lg">Ghế: </span>
-                            {_.sortBy(danhSachGheDangDat, ['seatNumber']).map((item, idx) => (
-                                <span
-                                    key={idx}
-                                    className="mb-2 text-orange-600 font-semibold text-lg mx-1 border-2 px-2 border-orange-100"
-                                >
-                                    {item.seatNumber}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                    <hr />
-                    <div className="my-5">
-                        <h2>Email</h2>
-                        {thongTinNguoiDung.email}
-                    </div>
-                    <hr />
-                    <div className="my-5">
-                        <h2>Phone</h2>
-                        {thongTinNguoiDung.phoneNumber}
-                    </div>
-                    <hr />
-                    <div className="mb-0 cursor-pointer">
-                        <div
-                            onClick={() => {
-                                if (danhSachGheDangDat.length === 0) {
-                                    return SwalConfig('Vui lòng chọn ghế', 'warning', true);
-                                }
-                                // else {
-                                //     callApiDatVe();
-                                // } 
-                            }}
-                            className="bg-orange-400 hover:bg-orange-600 text-white w-full text-center py-3 font-bold text-xl"
-                        >
-                            ĐẶT VÉ
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const KetQuaDatVe = (thongTinNguoiDung) => {
-    const renderTicketItem = () => {
-        return thongTinNguoiDung.thongTinDatVe?.map((item, index) => (
-            <div key={index} className="p-2 lg:w-1/3 md:w-1/2 w-full">
-                <div className="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-                    <img
-                        alt="team"
-                        className="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4"
-                        src={item.moviePoster}
-                    />
-                    <div className="flex-grow">
-                        <h2 className="text-gray-900 title-font font-medium">
-                            {item.movieName}
-                        </h2>
-                        <h2 className="text-gray-700 title-font font-medium">
-                            {_.first(item.danhSachGhe).tenHeThongRap} -{' '}
-                            {_.first(item.danhSachGhe).tenCumRap}
-                        </h2>
-                        <p className="text-gray-500">
-                            Ngày đặt: {moment(item.ngayDat).format('DD-MM-YYYY ~ hh:mm A')}
-                        </p>
-                        <p className="text-gray-500">
-                            Thời lượng: {item.thoiLuongPhim} phút
-                        </p>
-                        <p>
-                            Ghế:{' '}
-                            {item.danhSachGhe.map((ghe, iGhe) => (
-                                <button
-                                    key={iGhe}
-                                    className="mb-2 text-orange-600 font-semibold text-lg mx-1 px-1 border-orange-100"
-                                >
-                                    {ghe.seatRow}
-                                </button>
-                            ))}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        ));
-    };
-
-    return (
-        <section className="text-gray-600 body-font">
-            <div className="container px-5 py-10 mx-auto">
-                <div className="flex flex-col text-center w-full mb-10">
-                    <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 uppercase">
-                        lịch sử đặt vé khách hàng
-                    </h1>
-                </div>
-                <div className="flex flex-wrap -m-2">{renderTicketItem()}</div>
-            </div>
-        </section>
-    );
-};
+import { callApiThongTinNguoiDung } from '../../redux/reducers/UserReducer';
+import { layThongTinPhong } from '../../services/CinemaService';
 
 const BookingTicketPage = () => {
-    const { thongTinNguoiDung } = useSelector((state) => state.UserReducer);
     const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(true);
+    const { thongTinPhim, danhSachGhe } = useSelector(state => state.BookingReducer.chiTietPhongVe);
+    const { danhSachGheDangDat } = useSelector(state => state.BookingReducer);
+    const { thongTinNguoiDung } = useSelector(state => state.UserReducer);
+
     const { param, navigate } = useRoute();
+    const [isLoading, setIsLoading] = useState(true);
+    const [seatConfig, setSeatConfig] = useState({ maxSeatNumber: 9, maxSeatRow: 5 });
 
     useEffect(() => {
-        if (!getLocalStorage(LOCALSTORAGE_USER)) {
-            navigate('/login');
-        } else {
-            dispatch(callApiThongTinNguoiDung);
-            const callApiPhongVe = async () => {
-                console.log('param', param);
-                const result = await LayDanhSachPhongVeService(param.id);
-                dispatch(layDanhSachPhongVe(result.data.content));
-                setIsLoading(false);
-            };
-            callApiPhongVe();
-        }
+        if (!getLocalStorage(LOCALSTORAGE_USER)) return navigate('/login');
+        dispatch(callApiThongTinNguoiDung);
+        (async () => {
+            try {
+                const sch = (await LayDanhSachPhongVeService(param.id)).data;
+                const allSeats = (await LayDanhSachGhe()).data;
+                const rooms = (await layThongTinPhong()).data;
+                const room = rooms.find(r => r.roomId === sch.roomId);
+                if (room) {
+                    setSeatConfig({
+                        maxSeatNumber: room.numCol,
+                        maxSeatRow: room.numRow
+                    });
+                }
 
-        return () => {
-            dispatch(xoaDanhSachGheDangDat());
-        };
+                const phim = {
+                    movieId: sch.movieId,
+                    movieName: sch.movieName,
+                    cinemaName: sch.cinemaName,
+                    scheduleDate: moment(sch.scheduleDate).format('DD-MM-YYYY'),
+                    scheduleStart: sch.scheduleStart,
+                    scheduleEnd: sch.scheduleEnd
+                };
+
+                const seats = allSeats
+                    .filter(s => s.roomId === sch.roomId)
+                    .map(s => ({
+                        seatId: s.seatId,
+                        seatType: s.seatType,
+                        seatRow: s.seatRow,
+                        seatNumber: s.seatNumber,
+                        seatPrice: s.seatPrice,
+                        seatState: false,
+                        username: ''
+                    }));
+
+                dispatch(layDanhSachPhongVe({ thongTinPhim: phim, danhSachGhe: seats }));
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setIsLoading(false);
+            }
+        })();
+        return () => dispatch(xoaDanhSachGheDangDat());
     }, [dispatch, navigate, param.id]);
+
+    const renderSeats = () => {
+        const { maxSeatNumber, maxSeatRow } = seatConfig;
+        const seatRows = Array.from({ length: maxSeatRow }, (_, i) => String.fromCharCode(65 + i));
+        const groupedSeats = _.groupBy(danhSachGhe, 'seatRow');
+
+        return (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                {seatRows.map((row) => {
+                    const seats = groupedSeats[row] || [];
+                    const rowSeats = Array.from({ length: maxSeatNumber }, (_, index) => {
+                        return (groupedSeats[row] || []).find(s => Number(s.seatNumber) === index + 1);
+                    });
+
+                    return (
+                        <div key={row} style={{ display: 'flex', alignItems: 'center', margin: '4px 0' }}>
+                            <div style={{ width: 20, marginRight: 8, fontWeight: 'bold' }}>{row}</div>
+                            {rowSeats.map((ghe, i) => {
+                                if (!ghe) {
+                                    return <div key={i} style={{ width: 40, height: 40, margin: 4 }} />;
+                                }
+
+                                const booked = ghe.seatState;
+                                const selecting = danhSachGheDangDat.some(d => d.seatId === ghe.seatId);
+                                const mine = thongTinNguoiDung.username === ghe.username;
+
+                                let background = '#fff';
+                                let border = 'none';
+
+                                if (booked) {
+                                    background = '#ccc';
+                                } else if (selecting) {
+                                    background = '#F97316';
+                                } else if (ghe.seatType?.toLowerCase() === 'vip') {
+                                    background = '#ffd700';
+                                } else if (ghe.seatType?.toLowerCase() === 'couple') {
+                                    background = '#ff69b4';
+                                } else {
+                                    background = '#008000';
+                                }
+
+                                if (mine) {
+                                    background = '#fff';
+                                    border = '2px solid #ffa500';
+                                }
+
+                                return (
+                                    <button
+                                        key={ghe.seatId}
+                                        disabled={booked}
+                                        onClick={() => dispatch(datGhe(ghe))}
+                                        style={{
+                                            width: 40,
+                                            height: 40,
+                                            margin: 4,
+                                            borderRadius: 8,
+                                            fontWeight: 'bold',
+                                            background,
+                                            border,
+                                            color: booked ? '#fff' : '#000',
+                                            cursor: booked ? 'not-allowed' : 'pointer',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            transition: 'transform 0.2s ease',
+                                        }}
+                                    >
+                                        {booked ? (mine ? <FontAwesomeIcon icon={faUserTag} /> : <FontAwesomeIcon icon={faXmark} />) : ghe.seatNumber}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+
+                {/* Legend */}
+                <div style={{ marginTop: 80, display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#FF69B4', borderRadius: 4 }}></div>
+                        <span>Ghế tình yêu</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#008000', borderRadius: 4 }}></div>
+                        <span>Ghế thường</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#ffd700', borderRadius: 4 }}></div>
+                        <span>Ghế VIP</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#F97316', borderRadius: 4 }}></div>
+                        <span>Đang chọn</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#ccc', borderRadius: 4 }}></div>
+                        <span>Đã đặt</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 24, height: 24, background: '#fff', border: '2px solid #ffa500', borderRadius: 4 }}></div>
+                        <span>Ghế của bạn</span>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const handleDatVe = async () => {
+        if (!danhSachGheDangDat.length) return SwalConfig('Vui lòng chọn ghế', 'warning', true);
+        setIsLoading(true);
+        try {
+            await DatVe(new ThongTinDatVe(param.id, danhSachGheDangDat));
+            SwalConfig('Đặt vé thành công', 'success');
+            dispatch(xoaDanhSachGheDangDat());
+            dispatch(callApiThongTinNguoiDung);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const items = [
         {
-            label: '01. CHỌN GHẾ & ĐẶT VÉ',
-            key: 1,
-            children: BookingTicket(thongTinNguoiDung, param.id, setIsLoading)
-        },
-        {
-            label: '02. KẾT QUẢ ĐẶT VÉ',
-            key: 2,
-            children: KetQuaDatVe(thongTinNguoiDung)
+            label: <span style={{ fontSize: '20px', fontWeight: 'bold' }}>01. Chọn ghế & Đặt vé</span>, key: '1',
+            children: (
+                <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 24, padding: 16 }}>
+                    <div>
+                        <div style={{ position: 'relative', textAlign: 'center', marginBottom: 16 }}>
+                            <div style={{ width: '100%', height: 0, borderBottom: '40px solid #ccc', borderLeft: '60px solid transparent', borderRight: '60px solid transparent' }} />
+                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#fff', fontWeight: '600' }}>SCREEN</div>
+                        </div>
+                        {renderSeats()}
+                    </div>
+                    <div style={{ background: '#fff', padding: 16, borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.1)', fontSize: 20, fontWeight: '500', textAlign: 'left' }}>
+                        <h3 style={{ fontSize: 30, fontWeight: '700', textAlign: 'center', color: '#f97316', marginBottom: 16, marginTop: 10, borderBottom: '2px solid #f97316' }}>
+                            {_.sumBy(danhSachGheDangDat, 'seatPrice').toLocaleString()} VND
+                        </h3>
+                        <div style={{ marginBottom: 16, marginTop: 10, fontSize: 20, fontWeight: '350', textAlign: 'left' }}>
+                            <h4 style={{ fontSize: 25, fontWeight: '600', textAlign: 'center' }}>{thongTinPhim.movieName}</h4>
+                            <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Cụm rạp:</strong> {thongTinPhim.cinemaName}</p>
+                            <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Ngày chiếu:</strong> {thongTinPhim.scheduleDate}</p>
+                            <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Suất chiếu:</strong> {thongTinPhim.scheduleStart} ~ {thongTinPhim.scheduleEnd}</p>
+                        </div>
+                        <div>
+                            <strong>Ghế đã chọn:</strong>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 8 }}>
+                                {_.sortBy(danhSachGheDangDat, 'seatNumber').map(g => (
+                                    <span key={g.seatId} style={{ padding: '4px 8px', margin: 4, background: '#ffedd5', borderRadius: 4, color: '#c2410c' }}>
+                                        {g.seatRow}{g.seatNumber}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <div style={{ margin: '16px 0', fontWeight: '350' }}>
+                            <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Email:</strong> {thongTinNguoiDung.email}</p>
+                            <p style={{ marginBottom: 50, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Phone:</strong> {thongTinNguoiDung.phoneNumber}</p>
+                        </div>
+                        <button className='dat_ve_button' onClick={handleDatVe} style={{ width: '100%', padding: '12px 0', background: '#f97316', border: 'none', borderRadius: 8, color: '#fff', fontWeight: '700', cursor: 'pointer' }}>
+                            ĐẶT VÉ
+                        </button>
+                    </div>
+                </div>
+            )
         }
     ];
 
-    return (
-        <>
-            {isLoading ? (
-                <LoadingPage />
-            ) : (
-                <Tabs
-                    className="mt-[6rem] pb-2 min-h-[100vh] booking"
-                    items={items}
-                />
-            )}
-        </>
-    );
+    return isLoading ? <LoadingPage /> : <Tabs items={items} style={{ marginTop: 80, padding: '0 16px' }} />;
 };
 
 export default BookingTicketPage;
