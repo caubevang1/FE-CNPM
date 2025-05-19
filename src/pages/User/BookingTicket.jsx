@@ -45,6 +45,7 @@ const BookingTicketPage = () => {
                     movieId: sch.movieId,
                     movieName: sch.movieName,
                     cinemaName: sch.cinemaName,
+                    roomName: room?.roomName,
                     scheduleDate: moment(sch.scheduleDate).format('DD-MM-YYYY'),
                     scheduleStart: sch.scheduleStart,
                     scheduleEnd: sch.scheduleEnd
@@ -58,7 +59,7 @@ const BookingTicketPage = () => {
                         seatRow: s.seatRow,
                         seatNumber: s.seatNumber,
                         seatPrice: s.seatPrice,
-                        seatState: false,
+                        seatState: s.seatState,
                         username: ''
                     }));
 
@@ -99,7 +100,6 @@ const BookingTicketPage = () => {
 
                                 let background = '#fff';
                                 let border = 'none';
-
                                 if (booked) {
                                     background = '#ccc';
                                 } else if (selecting) {
@@ -211,6 +211,7 @@ const BookingTicketPage = () => {
                         <div style={{ marginBottom: 16, marginTop: 10, fontSize: 20, fontWeight: '350', textAlign: 'left' }}>
                             <h4 style={{ fontSize: 25, fontWeight: '600', textAlign: 'center' }}>{thongTinPhim.movieName}</h4>
                             <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Cụm rạp:</strong> {thongTinPhim.cinemaName}</p>
+                            <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Phòng chiếu:</strong> {thongTinPhim.roomName}</p>
                             <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Ngày chiếu:</strong> {thongTinPhim.scheduleDate}</p>
                             <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Suất chiếu:</strong> {thongTinPhim.scheduleStart} ~ {thongTinPhim.scheduleEnd}</p>
                         </div>

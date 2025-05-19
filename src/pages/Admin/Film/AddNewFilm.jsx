@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import { themPhimApi } from '../../../redux/reducers/FilmReducer';
 import { useDispatch } from 'react-redux';
-import { GROUPID } from '../../../utils/constant';
 import { SwalConfig } from '../../../utils/config';
 
 export default () => {

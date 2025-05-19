@@ -7,7 +7,7 @@ import LoadingPage from '../LoadingPage';
 import { callApiFilm } from '../../redux/reducers/FilmReducer';
 import { LayHeThongRapChieu } from '../../redux/reducers/CinemaReducer';
 import { history } from '../../utils/history';
-import { LayThongTinLichChieuHeThongRap } from '../../services/CinemaService';
+import { LayThongTinLichChieu } from '../../services/CinemaService';
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState(true);
@@ -26,8 +26,8 @@ export default function Home() {
 
         const getApiHeThongRapChieu = async () => {
             try {
-                const apiHeThongRap = await LayThongTinLichChieuHeThongRap();
-                dispatch(LayHeThongRapChieu(apiHeThongRap.data.content));
+                const apiHeThongRap = await LayThongTinLichChieu();
+                dispatch(LayHeThongRapChieu(apiHeThongRap.data));
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);

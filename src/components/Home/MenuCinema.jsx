@@ -80,7 +80,7 @@ export default function MenuCinema() {
                                 {lichChieuTheoPhim.slice(0, 4).map((lichChieu, index) => (
                                     <button
                                         key={index}
-                                        onClick={() => navigate(`booking/${lichChieu.movieName}`)}
+                                        onClick={() => navigate(`booking/${lichChieu.scheduleId}`)}
                                         className="bg-gray-100 hover:bg-gray-300 border-2 text-white font-bold py-2 px-4 rounded"
                                     >
                                         <span className="text-green-500 text-sm">

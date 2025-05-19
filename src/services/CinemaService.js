@@ -1,21 +1,22 @@
 import { http } from "../utils/baseUrl";
-import { GROUPID } from "../utils/constant";
-
-export const LayThongTinLichChieuHeThongRap = () => http.get(`/schedule`)
 
 export const LayThongTinLichChieu = () => http.get(`/schedule`)
 
 export const LayThongTinLichChieuChiTiet = (scheduleId) => http.get(`/schedule/${scheduleId}`)
 
-// export const layThongTinHeThongRap = () => http.get(`/cinemas`)
+export const layThongTinPhong = () => http.get(`/rooms`)
+
+export const layThongTinPhongChiTiet = (id) => http.get(`/rooms/${id}`)
+
+export const themPhong = (data) => http.post(`/rooms`, data)
+
+export const capNhatPhong = (data, id) => http.put(`/rooms/${id}`, data)
+
+export const xoaPhong = (id) => http.delete(`/rooms/${id}`)
 
 export const layThongTinCumRap = () => http.get(`/cinemas`)
 
-export const layThongTinCumRapTheoHeThong = () => http.get(`/cinemas`)
-
 export const layThongTinCumRapChiTiet = (id) => http.get(`/cinemas/${id}`)
-
-export const layThongTinPhong = () => http.get(`/rooms`)
 
 export const themCumRap = (data) => http.post(`/cinemas`, data)
 

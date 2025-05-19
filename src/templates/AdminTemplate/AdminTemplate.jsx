@@ -107,6 +107,23 @@ export default function AdminTemplate() {
                                                 },
                                             ]
                                         },
+                                        {
+                                            key: '4',
+                                            icon: <SnippetsOutlined />,
+                                            label: 'Room',
+                                            children: [
+                                                {
+                                                    key: '25',
+                                                    icon: <SnippetsOutlined />,
+                                                    label: <NavLink to='room'>Room Manager</NavLink>,
+                                                },
+                                                {
+                                                    key: '26',
+                                                    icon: <FileAddOutlined />,
+                                                    label: <NavLink to='/admin/room/addnewroom'>Add Room</NavLink>,
+                                                },
+                                            ]
+                                        },
                                     ]}
                                 />
                             </Sider>

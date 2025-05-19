@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { LayThongTinLichChieu, LayThongTinLichChieuChiTiet } from '../../services/CinemaService';
-import { capNhatPhimUpload, LayDanhSachPhim, LayThongTinPhimChiTiet, themPhimUpload, xoaPhim } from '../../services/FilmService';
+import { capNhatPhim, LayDanhSachPhim, LayThongTinPhimChiTiet, themPhim, xoaPhim } from '../../services/FilmService';
 import { SwalConfig } from '../../utils/config';
 import { history } from '../../utils/history'
 
@@ -55,7 +55,7 @@ export const callApiFilm = async (dispatch) => {
 
 export const themPhimApi = async (formData) => {
     try {
-        await themPhimUpload(formData)
+        await themPhim(formData)
         SwalConfig('Thêm phim thành công', 'success', true)
         history.push('/admin/film')
     } catch (error) {
@@ -74,9 +74,9 @@ export const callApiThongTinPhim = (movieId) => async (dispatch) => {
 }
 
 
-export const capNhatPhim = async (formData, id) => {
+export const upDateFilm = async (formData, id) => {
     try {
-        await capNhatPhimUpload(formData, id)
+        await capNhatPhim(formData, id)
         SwalConfig('Cập nhật thành công', 'success', true)
         history.push('/admin/film')
     } catch (error) {

@@ -1,7 +1,7 @@
 import { Form, Input, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { callApiThongTinPhim, capNhatPhim } from '../../../redux/reducers/FilmReducer';
+import { callApiThongTinPhim, upDateFilm } from '../../../redux/reducers/FilmReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import useRoute from '../../../hooks/useRoute';
 
@@ -40,7 +40,7 @@ export default () => {
             };
 
             // Cập nhật phim
-            dispatch(capNhatPhim(updatedMovie, value.movieId));
+            dispatch(upDateFilm(updatedMovie, value.movieId));
         }
     });
 

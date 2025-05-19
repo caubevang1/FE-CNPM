@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DatePicker, TimePicker, Select, Button, Form, Input } from 'antd';
-import { layThongTinCumRapTheoHeThong, layThongTinPhong } from '../../../services/CinemaService';
+import { layThongTinCumRap, layThongTinPhong } from '../../../services/CinemaService';
 import { useFormik } from 'formik';
 import useRoute from '../../../hooks/useRoute';
 import dayjs from 'dayjs';
@@ -79,7 +79,7 @@ export default function Showtime() {
         const callApiCumRap = async () => {
             try {
                 setLoading(true);
-                const result = await layThongTinCumRapTheoHeThong();
+                const result = await layThongTinCumRap();
                 if (Array.isArray(result.data)) {
                     setState(prev => ({
                         ...prev,

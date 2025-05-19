@@ -23,6 +23,10 @@ import ResetPassword from './pages/User/ResetPassword';
 import AddCinema from './pages/Admin/Cinema/AddCinema';
 import Cinema from './pages/Admin/Cinema/Cinema';
 import EditCinema from './pages/Admin/Cinema/EditCinema';
+import Room from './pages/Admin/Room/Room';
+import EditRoom from './pages/Admin/Room/EditRoom';
+import AddRoom from './pages/Admin/Room/AddRoom';
+import SeatManager from './pages/Admin/Room/Seat';
 
 function App() {
     return (
@@ -54,7 +58,10 @@ function App() {
                     <Route path='cinema/addnewcinema' element={<AddCinema />} />
                     <Route path='cinema' element={<Cinema />} />
                     <Route path='cinema/edit/:cinemaId' element={<EditCinema />} />
-                    <Route path='testcinema' element={<AddCinema />} />
+                    <Route path='room' element={<Room />} />
+                    <Route path='room/edit/:roomId' element={<EditRoom />} />
+                    <Route path='room/addnewroom' element={<AddRoom />} />
+                    <Route path="room/:roomId/seats" element={<SeatManager />} />
                 </Route>
             </Routes>
         </HistoryRouter>

@@ -39,4 +39,19 @@ const SwalConfig = (title, icon, showConfirmButton, timer) => {
     })
 }
 
-export { getLocalStorage, setLocalStorage, removeLocalStorage, SwalConfig }
+const confirmSwal = async (title = 'Bạn chắc chắn?', text = 'Hành động này không thể hoàn tác', confirmText = 'Xác nhận') => {
+    const result = await Swal.fire({
+        title,
+        text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: confirmText,
+        cancelButtonText: 'Hủy',
+        confirmButtonColor: '#f97316',
+        cancelButtonColor: '#d33',
+    });
+    return result.isConfirmed;
+};
+
+
+export { getLocalStorage, setLocalStorage, removeLocalStorage, SwalConfig, confirmSwal };
