@@ -31,7 +31,6 @@ const BookingTicketPage = () => {
             try {
                 const sch = (await LayDanhSachPhongVeService(param.id)).data;
                 const allSeats = (await LayDanhSachGheSchedule()).data;
-                console.log('allSeats', allSeats);
                 const rooms = (await layThongTinPhong()).data;
                 const room = rooms.find(r => r.roomId === sch.roomId);
                 if (room) {
@@ -54,7 +53,7 @@ const BookingTicketPage = () => {
                 const seats = allSeats
                     .filter(s => s.scheduleId === sch.scheduleId)
                     .map(s => ({
-                        seatScheduleId: s.seatScheduleId || s.seatScheduleId || s.seatScheduleID || s.seatSchedule?.id || s.id, // tuỳ API trả về, bạn xác định đúng key ở đây
+                        seatScheduleId: s.seatScheduleId || s.seatScheduleId || s.seatScheduleID || s.seatSchedule?.id || s.id,
                         seatId: s.seatId,
                         seatType: s.seatType,
                         seatRow: s.seatRow,
@@ -193,8 +192,6 @@ const BookingTicketPage = () => {
                 })),
                 foodAndDrinks: []
             };
-
-            console.log('Dữ liệu gửi đi:', payload);
 
             await DatVe(payload);
 

@@ -43,7 +43,6 @@ const SeatManager = () => {
 
 
     const fetchSeats = async () => {
-        console.log(roomDetail)
         setLoading(true);
         try {
             const res = await LayDanhSachGhe();
@@ -108,8 +107,6 @@ const SeatManager = () => {
                 numRow: rows.length,
                 seatPrice: seatPriceArray,
             };
-
-            console.log('Updated Payload:', payload);
             dispatch(capNhatPhongApi(payload, roomDetail.roomId));
         } catch (err) {
             console.error('Error updating room structure:', err);
@@ -165,10 +162,7 @@ const SeatManager = () => {
     const renderSeatsGrid = () => {
         if (!seats.length) return <p>Chưa có ghế nào trong phòng này.</p>;
         const rows = [...new Set(seats.map(s => s.seatRow))].sort();
-        console.log('row', rows);
         const maxCol = Math.max(...seats.map(s => Number(s.seatNumber)));
-        console.log('col', maxCol);
-        console.log('seatNumbers:', seats.map(s => s.seatNumber));
         return (
             <div style={{ textAlign: 'center' }}>
                 <div style={{ marginBottom: 24 }}>

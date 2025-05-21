@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAnglesRight } from '@fortawesome/free-solid-svg-icons'
-import { faSquareFacebook, faYoutube, faInstagram, faGooglePlay, faApple } from '@fortawesome/free-brands-svg-icons'
+import { faSquareFacebook, faYoutube, faInstagram, faGooglePlay, faApple, faChrome, faEdge, faFirefox } from '@fortawesome/free-brands-svg-icons'
 import { NavLink } from 'react-router-dom'
 import popcornImg from '../../assets/img/popcorn2.png';
 
@@ -59,7 +59,7 @@ const Footer = () => {
                         <ul className="space-y-3">
                             <li>
                                 <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
-                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faSquareFacebook} alt="Facebook" />
+                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3 ml-7' icon={faSquareFacebook} alt="Facebook" />
                                 </a>
                                 <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
                                     <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faYoutube} alt="YouTube" />
@@ -71,14 +71,17 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className="space-y-3">
-                        <h3 className="text-zinc-200 title-widget text-sm sm:text-lg font-medium">ĐA NỀN TẢNG </h3>
+                        <h3 className="text-zinc-200 title-widget text-sm sm:text-lg font-medium">HỖ TRỢ ĐA NỀN TẢNG </h3>
                         <ul className="space-y-3">
                             <li>
                                 <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
-                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faApple} alt="Apple" />
+                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3 ml-7' icon={faChrome} alt="Chrome" />
                                 </a>
                                 <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
-                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faGooglePlay} alt="Google Play" />
+                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faEdge} alt="Edge" />
+                                </a>
+                                <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
+                                    <FontAwesomeIcon className='w-8 h-8 md:w-11 md:h-11 mr-3' icon={faFirefox} alt="Firefox" />
                                 </a>
                             </li>
                         </ul>

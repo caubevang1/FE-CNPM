@@ -16,7 +16,6 @@ export default function BookingFoodAndDrink() {
             setLoading(true);
             try {
                 const stored = JSON.parse(localStorage.getItem('booking_info'));
-                console.log('Stored booking info:', stored);
                 if (!stored || !stored.cinemaName) {
                     message.error('Không có thông tin rạp để lọc đồ ăn');
                     setLoading(false);
@@ -24,7 +23,6 @@ export default function BookingFoodAndDrink() {
                 }
 
                 const res = await LayThongTinFoodAndDrink();
-                console.log('Dữ liệu món ăn:', res.data);
                 const filtered = res.data.filter(item => item.cinemaName === stored.cinemaName);
                 setFoodList(filtered);
             } catch (err) {
@@ -65,8 +63,6 @@ export default function BookingFoodAndDrink() {
             foodAndDrinks,
             bookingDay: new Date().toISOString()
         };
-
-        console.log('Payload gửi API:', payload);
 
         try {
             setLoading(true);
@@ -143,7 +139,7 @@ export default function BookingFoodAndDrink() {
                     type="primary"
                     size="large"
                     onClick={handleDatVe}
-                    style={{ padding: '0 32px', fontSize: 16, borderRadius: 6 }}
+                    style={{ padding: '0 32px', fontSize: 16, borderRadius: 6, backgroundColor: '#F97316', fontWeight: 'bold' }}
                 >
                     ĐẶT VÉ
                 </Button>
