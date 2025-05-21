@@ -1,7 +1,7 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAnglesRight } from '@fortawesome/free-solid-svg-icons'
-import { faSquareFacebook, faYoutube, faInstagram, faGooglePlay, faApple, faChrome, faEdge, faFirefox } from '@fortawesome/free-brands-svg-icons'
+import { faSquareFacebook, faYoutube, faInstagram, faChrome, faEdge, faFirefox } from '@fortawesome/free-brands-svg-icons'
 import { NavLink } from 'react-router-dom'
 import popcornImg from '../../assets/img/popcorn2.png';
 

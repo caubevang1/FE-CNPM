@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
     CapNhatThongTinNguoiDung, LayDanhSachLoaiNguoiDung, LayDanhSachNguoiDung,
-    LayThongTinPhimNguoiDungEdit, LayThongTinTaiKhoan, XoaNguoiDung
+    LayThongTinPhimNguoiDungEdit, LayThongTinTaiKhoan, XoaNguoiDung, LayThongTinBooking
 } from '../../services/UserService';
 import { removeLocalStorage, SwalConfig } from '../../utils/config';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
@@ -27,38 +27,49 @@ const initialState = {
     thongTinNguoiDung: thongTinTaiKhoan,
     arrayUser: [],
     thongTinNguoiDungEdit: {},
-    danhSachLoaiNguoiDung: []
-}
+    danhSachLoaiNguoiDung: [],
+    bookings: [], // Thêm state mới để lưu thông tin booking của người dùng
+};
 
 const UserReducer = createSlice({
     name: "UserReducer",
     initialState,
     reducers: {
         setStatusLogin: (state, { type, payload }) => {
-            state.isLogin = payload
+            state.isLogin = payload;
         },
         setUserInfor: (state, { type, payload }) => {
-            state.thongTinNguoiDung = payload
+            state.thongTinNguoiDung = payload;
         },
         getUserList: (state, { type, payload }) => {
-            state.arrayUser = payload
+            state.arrayUser = payload;
             if (payload.length > 0) {
                 const { firstName, lastName } = payload[0];
                 state.hoTen = `${firstName} ${lastName}`;
             }
         },
         layThongTinNguoiDungEdit: (state, { type, payload }) => {
-            state.thongTinNguoiDungEdit = payload
+            state.thongTinNguoiDungEdit = payload;
         },
         layDanhSachLoaiNguoiDungAction: (state, { type, payload }) => {
-            state.danhSachLoaiNguoiDung = payload
-        }
-    }
+            state.danhSachLoaiNguoiDung = payload;
+        },
+        setBookings: (state, { type, payload }) => {
+            state.bookings = payload; // Lưu thông tin booking vào state
+        },
+    },
 });
 
-export const { setStatusLogin, setUserInfor, getUserList, layThongTinNguoiDungEdit, layDanhSachLoaiNguoiDungAction } = UserReducer.actions
+export const {
+    setStatusLogin,
+    setUserInfor,
+    getUserList,
+    layThongTinNguoiDungEdit,
+    layDanhSachLoaiNguoiDungAction,
+    setBookings // Export action mới
+} = UserReducer.actions;
 
-export default UserReducer.reducer
+export default UserReducer.reducer;
 
 export const callApiThongTinNguoiDung = async (dispatch) => {
     try {
@@ -123,4 +134,27 @@ export const layDanhSachLoaiNguoiDung = async (dispatch) => {
         console.log(error)
     }
 }
+
+export const callApiThongTinBooking = async (dispatch) => {
+    try {
+        const token = localStorage.getItem('accessToken') || '';
+        const response = await LayThongTinBooking({
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (Array.isArray(response.data.body)) {
+            dispatch(setBookings(response.data.body));
+        } else {
+            console.error('Dữ liệu không phải là mảng:', response.data);
+            dispatch(setBookings([]));
+        }
+    } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+        dispatch(setBookings([]));
+    }
+};
+
 

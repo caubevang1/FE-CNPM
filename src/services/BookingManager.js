@@ -23,4 +23,6 @@ export const ThemGhe = (data) => http.post(`seats`, data)
 
 export const LayThongTinFoodAndDrink = () => http.get(`foodanddrink`)
 
+export const LayThongTinFoodAndDrinkChiTiet = (foodAndDrinkId) => http.get(`foodanddrink/${foodAndDrinkId}`)
+
 export const DatFoodAndDrink = (data) => http.post(`bookingFoodAndDrink`, data)

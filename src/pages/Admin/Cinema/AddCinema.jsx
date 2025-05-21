@@ -3,7 +3,6 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { SwalConfig } from '../../../utils/config';
-// import { themCumRapApi } from '../../../redux/reducers/CinemaReducer'; // Giả định bạn có reducer này
 import { themCumRapApi } from '../../../redux/reducers/CinemaReducer';
 
 export default function AddCinema() {

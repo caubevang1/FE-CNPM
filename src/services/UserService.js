@@ -19,3 +19,5 @@ export const CapNhatThongTinNguoiDung = (user) => http.put(`/users/${user.id}`, 
 export const sendOtpEmail = (data) => http.post('/auth/forget-password', data);
 
 export const resetPasswordWithOtp = (otp, data) => http.post(`/auth/reset-password/${otp}`, data);
+
+export const LayThongTinBooking = () => http.get('/booking/myBooking')
