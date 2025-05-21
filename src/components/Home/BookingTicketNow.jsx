@@ -16,7 +16,6 @@ export default function BookingTicketNow(props) {
         lichChieuDangChon: '',
     });
 
-    // Phân loại cụm rạp từ danh sách lịch chiếu
     const layDanhSachCumRap = (lichChieu) => {
         const rapMap = {};
         lichChieu.forEach(item => {
@@ -32,7 +31,6 @@ export default function BookingTicketNow(props) {
         }));
     };
 
-    // Lấy lịch chiếu theo phim
     const callApiLichChieuTheoPhim = async (movieId) => {
         try {
             const res = await LayThongTinLichChieu();
@@ -61,7 +59,6 @@ export default function BookingTicketNow(props) {
         }
     };
 
-    // Xử lý thay đổi dropdown
     const handleChange = async (e) => {
         const { name, value } = e.target;
 
@@ -105,7 +102,6 @@ export default function BookingTicketNow(props) {
         }
     };
 
-    // Gửi form
     const handleOnSubmit = (e) => {
         e.preventDefault();
 

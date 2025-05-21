@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 import useRoute from '../../hooks/useRoute'
-import { kiemTraRong, kiemTraDinhDang, kiemTraDoDai } from '../../utils/validation';
+import { kiemTraRong, kiemTraDinhDang } from '../../utils/validation';
 import { getLocalStorage, setLocalStorage, SwalConfig } from '../../utils/config';
 import { useDispatch } from 'react-redux';
 import { setStatusLogin } from '../../redux/reducers/UserReducer';
@@ -32,11 +32,10 @@ export default function Login() {
     const callApiLogin = async (userLogin) => {
         try {
             const apiLogin = await DangNhap(userLogin);
-            // Lưu token vào localStorage
             if (apiLogin.data.body?.token) {
                 setLocalStorage(LOCALSTORAGE_USER, {
                     accessToken: apiLogin.data.body.token,
-                    username: userLogin.username  // hoặc apiLogin.data.body.username nếu API trả về
+                    username: userLogin.username
                 });
             } else {
                 console.error('Không tìm thấy token trong dữ liệu API!');
@@ -46,6 +45,7 @@ export default function Login() {
             SwalConfig('Đăng nhập thành công', 'success', false);
             history.replace({ pathname: '/' });
         } catch (error) {
+            console.error('Lỗi khi đăng nhập:', error);
             SwalConfig(error.response.data.message, 'error', true, 3000);
         }
     };
@@ -53,18 +53,10 @@ export default function Login() {
     const HandleChangeInput = (e) => {
         let { name, title, value } = e.target
         let { nguoiDung, err, isValid } = { ...state }
-        isValid = true  // Reset isValid mỗi lần có sự thay đổi
-
-        // Kiểm tra tính hợp lệ cho tài khoản
+        isValid = true
         if (name === 'username') {
             isValid = isValid && kiemTraRong(value, err, name, title) && kiemTraDinhDang(value, err, name, title, /^\S*$/, 'không được có khoảng cách')
         }
-
-        // Kiểm tra tính hợp lệ cho mật khẩu
-        // if (name === 'password') {
-        //     isValid = isValid && kiemTraRong(value, err, name, title) && kiemTraDoDai(value, err, name, title, 6, 50)
-        // }
-
         nguoiDung[name] = value
         setState({ ...state, nguoiDung, err, isValid })
     }

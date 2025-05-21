@@ -1,6 +1,6 @@
-import React from 'react'
+
 import { useDispatch } from 'react-redux';
-import {useParams, useNavigate, useSearchParams} from 'react-router-dom'
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function useRoute() {
 
@@ -9,5 +9,5 @@ export default function useRoute() {
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch()
 
-    return {param, navigate, searchParams: [searchParams, setSearchParams], dispatch}
+    return { param, navigate, searchParams: [searchParams, setSearchParams], dispatch }
 }

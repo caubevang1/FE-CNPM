@@ -15,7 +15,7 @@ export default function Showtime() {
         phongChieu: [],
     });
     const [loading, setLoading] = useState(false);
-    const [movieLength, setMovieLength] = useState(0); // Lưu độ dài phim
+    const [movieLength, setMovieLength] = useState(0);
 
     const formik = useFormik({
         initialValues: {
@@ -23,16 +23,14 @@ export default function Showtime() {
             roomId: '',
             cinemaId: '',
             scheduleDate: '',
-            scheduleStart: '', // Thời gian bắt đầu (chỉ giờ)
-            scheduleEnd: '',    // Thời gian kết thúc (chỉ giờ)
+            scheduleStart: '',
+            scheduleEnd: '',
         },
 
         onSubmit: async (values) => {
             try {
                 const start = dayjs(values.scheduleStart);
-                const end = start.add(movieLength + 10, 'minute'); // Cộng thêm 10 phút
-
-                // Làm tròn phút đến bội số của 5
+                const end = start.add(movieLength + 10, 'minute');
                 const roundedEnd = end.minute(Math.round(end.minute() / 5) * 5);
 
                 const requestData = {
@@ -43,7 +41,7 @@ export default function Showtime() {
                     scheduleStart: dayjs.isDayjs(values.scheduleStart)
                         ? values.scheduleStart.format('HH:mm:ss')
                         : '00:00:00',
-                    scheduleEnd: roundedEnd.format('HH:mm:ss'), // Sử dụng thời gian kết thúc đã làm tròn
+                    scheduleEnd: roundedEnd.format('HH:mm:ss'),
                 };
 
                 const result = await TaoLichChieu(requestData);
@@ -59,9 +57,9 @@ export default function Showtime() {
         const fetchMovieDetails = async () => {
             try {
                 setLoading(true);
-                const result = await LayThongTinPhimChiTiet(param.id); // Lấy thông tin phim chi tiết từ API
+                const result = await LayThongTinPhimChiTiet(param.id);
                 if (result?.data?.movieLength) {
-                    setMovieLength(result.data.movieLength); // Lưu độ dài phim vào state
+                    setMovieLength(result.data.movieLength);
                 } else {
                     console.error('Không lấy được độ dài phim');
                 }
@@ -72,7 +70,7 @@ export default function Showtime() {
             }
         };
 
-        fetchMovieDetails(); // Gọi API lấy thông tin phim chi tiết
+        fetchMovieDetails();
     }, [param.id]);
 
     useEffect(() => {
@@ -100,7 +98,7 @@ export default function Showtime() {
 
     const handleChangeCumRap = async (cinemaId) => {
         formik.setFieldValue('cinemaId', cinemaId);
-        formik.setFieldValue('roomId', ''); // Reset roomId khi thay đổi cinemaId
+        formik.setFieldValue('roomId', '');
 
         try {
             setLoading(true);
@@ -134,7 +132,6 @@ export default function Showtime() {
 
     const handleScheduleStartChange = (value) => {
         formik.setFieldValue('scheduleStart', value);
-        // Tính giờ kết thúc tự động khi giờ bắt đầu thay đổi
         if (value) {
             const start = dayjs(value);
             const end = start.add(movieLength + 10, 'minute');
@@ -197,7 +194,7 @@ export default function Showtime() {
                         value={formik.values.scheduleEnd ? dayjs(formik.values.scheduleEnd, 'HH:mm:ss') : null}
                         onChange={(value) => formik.setFieldValue('scheduleEnd', value)}
                         placeholder="Giờ kết thúc sẽ tự động tính toán"
-                        disabled // Tắt chỉnh sửa giờ kết thúc
+                        disabled
                     />
                 </Form.Item>
 

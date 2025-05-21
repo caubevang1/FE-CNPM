@@ -5,6 +5,7 @@ import FilmReducer from "./reducers/FilmReducer";
 import CinemaReducer from "./reducers/CinemaReducer";
 import BookingReducer from "./reducers/BookingReducer";
 import RoomReducer from "./reducers/RoomReducer";
+import ScheduleReducer from "./reducers/ScheduleReducer";
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         CinemaReducer,
         BookingReducer,
         RoomReducer,
+        ScheduleReducer,
     }
 })
 

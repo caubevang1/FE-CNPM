@@ -27,6 +27,8 @@ import Room from './pages/Admin/Room/Room';
 import EditRoom from './pages/Admin/Room/EditRoom';
 import AddRoom from './pages/Admin/Room/AddRoom';
 import SeatManager from './pages/Admin/Room/Seat';
+import Schedule from './pages/Admin/Film/Schedule';
+import BookingFoodAndDrink from './pages/User/BookingFoodAndDrink';
 
 function App() {
     return (
@@ -45,6 +47,7 @@ function App() {
                     <Route path='booking/:id' element={<BookingTicket />} />
                     <Route path="/forget-password" element={<ForgotPassword />} />
                     <Route path="reset-password/:otp" element={<ResetPassword />} />
+                    <Route path='foodanddrink' element={<BookingFoodAndDrink />} />
                 </Route>
                 <Route path='/admin' element={<AdminTemplate />}>
                     <Route path='/admin' index element={<Dashboard />} />
@@ -62,6 +65,7 @@ function App() {
                     <Route path='room/edit/:roomId' element={<EditRoom />} />
                     <Route path='room/addnewroom' element={<AddRoom />} />
                     <Route path="room/:roomId/seats" element={<SeatManager />} />
+                    <Route path='schedule' element={<Schedule />} />
                 </Route>
             </Routes>
         </HistoryRouter>

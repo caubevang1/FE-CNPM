@@ -4,6 +4,10 @@ export const LayThongTinLichChieu = () => http.get(`/schedule`)
 
 export const LayThongTinLichChieuChiTiet = (scheduleId) => http.get(`/schedule/${scheduleId}`)
 
+export const XoaLichChieu = (scheduleId) => http.delete(`/schedule/${scheduleId}`)
+
+export const CapNhatLichChieu = (data, scheduleId) => http.put(`/schedule/${scheduleId}`, data)
+
 export const layThongTinPhong = () => http.get(`/rooms`)
 
 export const layThongTinPhongChiTiet = (id) => http.get(`/rooms/${id}`)

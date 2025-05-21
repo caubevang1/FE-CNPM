@@ -56,12 +56,18 @@ export const xoaPhongApi = (roomId) => async (dispatch) => {
 
 export const capNhatPhongApi = async (formData, roomId) => {
     try {
-        await capNhatPhong(formData, roomId)
-        SwalConfig('Cập nhật phòng thành công', 'success', true)
-        history.push('/admin/room')
-    }
-    catch (error) {
-        SwalConfig(`${error.response.data.content}`, 'error', true, 3000)
+        await capNhatPhong(formData, roomId);
+
+
+        const currentPath = window.location.pathname;
+        const expectedPath = `/admin/room/edit/${roomId}`;
+
+        if (currentPath === expectedPath) {
+            SwalConfig('Cập nhật phòng thành công', 'success', true);
+            history.push('/admin/room');
+        }
+    } catch (error) {
+        SwalConfig(`${error.response?.data?.content || 'Cập nhật thất bại'}`, 'error', true, 3000);
     }
 }
 

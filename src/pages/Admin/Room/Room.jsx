@@ -5,8 +5,8 @@ import { debounce } from 'lodash';
 import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-// Giả sử bạn đã viết sẵn RoomReducer và action creators
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChair } from '@fortawesome/free-solid-svg-icons';
 import {
     callApiRoom,
     xoaPhongApi
@@ -27,7 +27,6 @@ export default function Room() {
         setData(arrRoom);
     }, [arrRoom]);
 
-    // Tìm kiếm theo tên phòng hoặc tên rạp
     const searchKeyword = useCallback(
         debounce((value) => {
             setData(arrRoom.filter(item => {
@@ -59,26 +58,40 @@ export default function Room() {
             sorter: (a, b) => a.cinemaName.localeCompare(b.cinemaName),
         },
         {
-            title: 'Số ghế',
-            dataIndex: 'soGhe',
-            render: (_, room) => room.numRow * room.numCol,
-            sorter: (a, b) => (a.numRow * a.numCol) - (b.numRow * b.numCol),
-            width: 120,
+            title: 'Số hàng',
+            dataIndex: 'numRow',
+            sorter: (a, b) => a.numRow - b.numRow,
+            width: 100,
+        },
+        {
+            title: 'Số cột',
+            dataIndex: 'numCol',
+            render: (text, room) => room.numCol,
+            sorter: (a, b) => a.numCol - b.numCol,
+            width: 100,
         },
         {
             title: 'Hành động',
             dataIndex: 'hanhDong',
             render: (text, room) => (
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
                     <Tooltip title="Chỉnh sửa phòng">
-                        <NavLink className="text-blue-600 text-2xl" to={`/admin/room/edit/${room.roomId}`}>
+                        <NavLink
+                            className="text-blue-600 text-2xl"
+                            to={`/admin/room/edit/${room.roomId}`}
+                            style={{ display: 'flex', alignItems: 'center', width: 32, height: 32, justifyContent: 'center' }}
+                        >
                             <EditOutlined />
                         </NavLink>
                     </Tooltip>
 
                     <Tooltip title="Quản lý ghế">
-                        <NavLink className="text-green-600 text-2xl" to={`/admin/room/${room.roomId}/seats`}>
-                            🎟️
+                        <NavLink
+                            className="text-green-600 text-2xl"
+                            to={`/admin/room/${room.roomId}/seats`}
+                            style={{ display: 'flex', alignItems: 'center', width: 32, height: 32, justifyContent: 'center' }}
+                        >
+                            <FontAwesomeIcon icon={faChair} />
                         </NavLink>
                     </Tooltip>
 
@@ -87,6 +100,7 @@ export default function Room() {
                             type="text"
                             danger
                             className="text-2xl"
+                            style={{ padding: 0, border: 'none', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                             onClick={() => {
                                 Swal.fire({
                                     title: 'Bạn có chắc muốn xóa phòng này?',
@@ -107,6 +121,7 @@ export default function Room() {
                         </Button>
                     </Tooltip>
                 </div>
+
             ),
             width: 180,
         },

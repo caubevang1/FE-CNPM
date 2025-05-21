@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Table, Input, Button, Tooltip } from 'antd';
+import { Table, Input, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Swal from 'sweetalert2';
 import { debounce } from 'lodash';
-import { callApiCinema, callApiXoaCinema } from '../../../redux/reducers/CinemaReducer'; // 👈 Sửa path theo project của bạn
+import { callApiCinema, callApiXoaCinema } from '../../../redux/reducers/CinemaReducer';
 const { Search } = Input;
 
 export default function Cinema() {
     const dispatch = useDispatch();
-    const { arrCinema } = useSelector(state => state.CinemaReducer); // 👈 Thay đúng tên reducer của bạn
+    const { arrCinema } = useSelector(state => state.CinemaReducer);
     const [data, setData] = useState([]);
 
     useEffect(() => {

@@ -23,7 +23,6 @@ export default function Film() {
         setData(arrFilm);
     }, [arrFilm]);
 
-    // Hàm tìm kiếm với debounce
     const searchKeyword = useCallback(
         debounce((value) => {
             setData(arrFilm.filter(item => {
@@ -35,7 +34,7 @@ export default function Film() {
                     return itemLower.includes(keyLower);
                 }
             }));
-        }, 200),  // 500ms là thời gian debounce
+        }, 200),
         [arrFilm]
     );
 
@@ -98,24 +97,27 @@ export default function Film() {
                             <EditOutlined />
                         </NavLink>
                     </Tooltip>
-                    <Tooltip placement="bottom" title={'Xóa phim'}>
-                        <button onClick={() => {
-                            Swal.fire({
-                                title: 'Bạn có muốn xóa phim này không ?',
-                                showDenyButton: true,
-                                confirmButtonText: 'Đồng ý',
-                                denyButtonText: 'Hủy',
-                                icon: 'question',
-                                iconColor: 'rgb(104 217 254)',
-                                confirmButtonColor: '#f97316',
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    dispatch(callApiXoaPhim(film.movieId));
-                                }
-                            });
-                        }} key={2} className='bg-dark text-red-600 text-2xl hover:text-red-400'>
-                            <DeleteOutlined />
-                        </button>
+                    <Tooltip title="Xóa phim">
+                        <Button
+                            danger
+                            type="text"
+                            icon={<DeleteOutlined />}
+                            className="text-2xl hover:text-red-400"
+                            onClick={() => {
+                                Swal.fire({
+                                    title: 'Bạn có muốn xóa phim này không?',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Xóa',
+                                    cancelButtonText: 'Hủy',
+                                    confirmButtonColor: '#d33',
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        dispatch(callApiXoaPhim(film.movieId));
+                                    }
+                                });
+                            }}
+                        />
                     </Tooltip>
                     <Tooltip placement="topRight" title={'Tạo lịch chiếu'}>
                         <NavLink key={3} className='bg-dark text-orange-600 hover:text-orange-400 ml-3 text-2xl' to={`/admin/film/showtime/${film.movieId}/${film.movieName}`}>

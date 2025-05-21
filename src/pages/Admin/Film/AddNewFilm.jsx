@@ -15,18 +15,17 @@ export default () => {
             movieLength: 0,
             movieReview: 0,
             moviePoster: '',
-            movieGenre: '',  // Thêm trường movieGenre vào đây
+            movieGenre: '',
         },
         onSubmit: (value) => {
             const { movieName, movieDescription, movieLength, movieReview, moviePoster, movieGenre } = value;
             if (movieName && movieDescription && movieLength && movieReview && moviePoster && movieGenre) {
-                // Gửi dữ liệu dưới dạng JSON
                 const payload = {
                     ...value,
                 };
                 dispatch(themPhimApi(payload));
 
-                setImgSrc(''); // Xóa preview hình ảnh sau khi gửi
+                setImgSrc('');
             } else {
                 SwalConfig('Vui lòng điền đầy đủ thông tin', 'error', true);
             }

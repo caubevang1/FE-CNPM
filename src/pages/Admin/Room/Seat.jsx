@@ -5,7 +5,8 @@ import { LayDanhSachGhe, ThemGhe, XoaGhe, CapNhatGhe } from '../../../services/B
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { SwalConfig, confirmSwal } from '../../../utils/config';
-
+import { callApiRoomDetail, capNhatPhongApi } from '../../../redux/reducers/RoomReducer';
+import { useDispatch, useSelector } from 'react-redux';
 const LegendBox = ({ color, label }) => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{
@@ -23,29 +24,46 @@ const LegendBox = ({ color, label }) => (
 
 const SeatManager = () => {
     const { roomId } = useParams();
+    const dispatch = useDispatch();
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMode, setModalMode] = useState('view');
     const [currentSeat, setCurrentSeat] = useState(null);
     const [form] = Form.useForm();
+    const [seatPrices, setSeatPrices] = useState({});
+    const { roomDetail } = useSelector(state => state.RoomReducer);
+
     useEffect(() => {
+        if (roomId) {
+            dispatch(callApiRoomDetail(roomId));
+        }
         fetchSeats();
-    }, [roomId]);
+    }, [roomId, dispatch]);
 
 
     const fetchSeats = async () => {
+        console.log(roomDetail)
         setLoading(true);
         try {
             const res = await LayDanhSachGhe();
             const filteredSeats = res.data.filter(s => String(s.roomId) === String(roomId));
             setSeats(filteredSeats);
+
+            const seatPrices = filteredSeats.reduce((acc, seat) => {
+                if (!acc[seat.seatType]) {
+                    acc[seat.seatType] = seat.seatPrice;
+                }
+                return acc;
+            }, {});
+            setSeatPrices(seatPrices);
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
+
 
     const openModal = (mode, seat = null) => {
         setModalMode(mode);
@@ -62,6 +80,41 @@ const SeatManager = () => {
         setModalVisible(false);
         setCurrentSeat(null);
     };
+    const updateRoomStructure = async () => {
+        try {
+            const res = await LayDanhSachGhe();
+            const filteredSeats = res.data.filter(s => String(s.roomId) === String(roomDetail.roomId));
+
+            const rows = [...new Set(filteredSeats.map(s => s.seatRow))];
+            const maxCol = Math.max(...filteredSeats.map(s => Number(s.seatNumber) || 0));
+
+            const seatPrices = filteredSeats.reduce((acc, seat) => {
+                if (!acc[seat.seatType]) {
+                    acc[seat.seatType] = seat.seatPrice;
+                }
+                return acc;
+            }, {});
+
+            const seatPriceArray = [
+                seatPrices["Couple"] || 0,
+                seatPrices["Normal"] || 0,
+                seatPrices["VIP"] || 0
+            ];
+
+            const payload = {
+                cinemaId: roomDetail.cinemaId,
+                roomName: roomDetail.roomName,
+                numCol: maxCol,
+                numRow: rows.length,
+                seatPrice: seatPriceArray,
+            };
+
+            console.log('Updated Payload:', payload);
+            dispatch(capNhatPhongApi(payload, roomDetail.roomId));
+        } catch (err) {
+            console.error('Error updating room structure:', err);
+        }
+    };
 
     const handleDelete = async (seat) => {
         const confirmed = await confirmSwal(
@@ -74,6 +127,7 @@ const SeatManager = () => {
                 await XoaGhe(seat.seatId);
                 SwalConfig('Xóa ghế thành công', 'success', true);
                 fetchSeats();
+                updateRoomStructure();
                 closeModal();
             } catch {
                 SwalConfig('Xóa ghế thất bại', 'error', true);
@@ -84,6 +138,7 @@ const SeatManager = () => {
     const handleModalOk = async () => {
         try {
             const values = await form.validateFields();
+            values.seatRow = values.seatRow.toUpperCase();
             if (modalMode === 'edit') {
                 await CapNhatGhe(currentSeat.seatId, {
                     seatRow: values.seatRow,
@@ -99,6 +154,7 @@ const SeatManager = () => {
                 SwalConfig('Thêm ghế thành công', 'success', true);
             }
             fetchSeats();
+            updateRoomStructure();
             closeModal();
         } catch (err) {
             console.error(err);
@@ -109,7 +165,10 @@ const SeatManager = () => {
     const renderSeatsGrid = () => {
         if (!seats.length) return <p>Chưa có ghế nào trong phòng này.</p>;
         const rows = [...new Set(seats.map(s => s.seatRow))].sort();
+        console.log('row', rows);
         const maxCol = Math.max(...seats.map(s => Number(s.seatNumber)));
+        console.log('col', maxCol);
+        console.log('seatNumbers:', seats.map(s => s.seatNumber));
         return (
             <div style={{ textAlign: 'center' }}>
                 <div style={{ marginBottom: 24 }}>
@@ -179,12 +238,43 @@ const SeatManager = () => {
 
     return (
         <div style={{ padding: 32, background: '#f0f2f5', minHeight: '100vh' }}>
-            <h2 style={{
-                fontWeight: 'bold', marginBottom: 24, color: '#333',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between'
-            }}>
-                Quản lý ghế phòng {roomId}
-                <Button type="primary" shape="round" onClick={() => openModal('add')}>
+            <h2
+                style={{
+                    fontSize: 24,
+                    fontWeight: 'bold',
+                    marginBottom: 24,
+                    color: '#333',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    position: 'relative',
+                }}
+            >
+                {/* Bên trái */}
+                <div style={{ color: '#1890ff', fontWeight: 'bold' }}>
+                    {roomDetail?.roomName}
+                </div>
+
+                {/* Giữa */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        color: '#1890ff',
+                        fontWeight: 'bold',
+                    }}
+                >
+                    {roomDetail?.cinemaName}
+                </div>
+
+                {/* Bên phải*/}
+                <Button
+                    style={{ background: '#1890ff', fontWeight: 'bold' }}
+                    type="primary"
+                    shape="round"
+                    onClick={() => openModal('add')}
+                >
                     Thêm ghế mới
                 </Button>
             </h2>
@@ -199,9 +289,9 @@ const SeatManager = () => {
                 width={600}
                 centered
                 open={modalVisible}
-                footer={null} // ❌ Không dùng footer mặc định
-                closable={false} // ❌ Không hiển thị nút [X] mặc định
-                maskClosable={false} // ❌ Không đóng khi click ra ngoài
+                footer={null}
+                closable={false}
+                maskClosable={false}
                 onCancel={closeModal}
                 title={null}
             >
@@ -243,19 +333,32 @@ const SeatManager = () => {
                                     <Input type="number" placeholder="Ví dụ: 1" style={{ borderRadius: 4 }} />
                                 </Form.Item>
                                 <Form.Item name="seatType" label="Loại ghế" rules={[{ required: true }]}>
-                                    <select style={{
-                                        width: '100%',
-                                        padding: '8px',
-                                        borderRadius: 4,
-                                        border: '1px solid #d9d9d9'
-                                    }}>
+                                    <select
+                                        style={{
+                                            width: '100%',
+                                            padding: '8px',
+                                            borderRadius: 4,
+                                            border: '1px solid #d9d9d9'
+                                        }}
+                                        onChange={e => {
+                                            const seatType = e.target.value;
+                                            form.setFieldsValue({
+                                                seatPrice: seatPrices[seatType] || 0
+                                            });
+                                        }}
+                                    >
                                         <option value="Normal">Thường</option>
                                         <option value="VIP">VIP</option>
                                         <option value="Couple">Tình yêu</option>
                                     </select>
                                 </Form.Item>
                                 <Form.Item name="seatPrice" label="Giá ghế (VND)" rules={[{ required: true }]}>
-                                    <Input type="number" placeholder="Ví dụ: 100000" style={{ borderRadius: 4 }} />
+                                    <Input
+                                        type="number"
+                                        placeholder="Ví dụ: 100000"
+                                        style={{ borderRadius: 4 }}
+                                        disabled={true}
+                                    />
                                 </Form.Item>
                             </Form>
                         ) : (

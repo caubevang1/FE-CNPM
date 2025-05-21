@@ -32,26 +32,18 @@ export default function Detail() {
             window.scrollTo(0, 0);
         });
 
-        // Fetch movie details and schedules
         const fetchData = async (id) => {
             try {
-                // Fetching movie details
                 const apiChiTiet = await LayThongTinPhimChiTiet(id);
                 dispatch(getfilmDetail(apiChiTiet.data));
                 setIsLoadingDetail(false);
                 setPercent(apiChiTiet.data.movieReview * 20);
-
-                // Fetch cinema details
                 const apiCinemas = await layThongTinCumRap();
-                setCinemas(apiCinemas.data); // Store cinema details
-
-                // Fetch room details
+                setCinemas(apiCinemas.data);
                 const apiRooms = await layThongTinPhong();
-                setRooms(apiRooms.data); // Store room details
-
-                // Fetching schedules for the movie
+                setRooms(apiRooms.data);
                 const apiSchedule = await LayThongTinLichChieu();
-                setShowtimes(apiSchedule.data); // Store showtimes
+                setShowtimes(apiSchedule.data);
             } catch (error) {
                 history.replace('/notfound');
             }
@@ -73,7 +65,6 @@ export default function Detail() {
         setIsModalOpen(false);
     };
 
-    // Filter showtimes based on movie id
     const filteredShowtimes = showtimes.filter(
         (showtime) => showtime.movieName === filmDetail.movieName
     );
@@ -109,15 +100,13 @@ export default function Detail() {
                                 </div>
 
                                 <div className="mt-4 xl:mt-0 flex items-center">
-                                    {/* Wrapper for Progress, User, and Score */}
                                     <div
                                         style={{
                                             display: 'flex',
-                                            flexDirection: 'row',  // Sắp xếp theo hàng ngang
+                                            flexDirection: 'row',
                                             alignItems: 'center',
                                         }}
                                     >
-                                        {/* Vòng Progress */}
                                         <div
                                             onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                                             onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
@@ -146,9 +135,6 @@ export default function Detail() {
                                                 }}
                                             />
                                         </div>
-
-
-                                        {/* Dòng "User" và "Score" */}
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                             <p
                                                 style={{
@@ -192,8 +178,6 @@ export default function Detail() {
 
                             <div className="overlayDetail"></div>
                         </div>
-
-                        {/* Render Cinemas and Rooms */}
                         <div id="cinemas-rooms" className="mt-6">
                             {filteredShowtimes.length > 0 ? (
                                 <ShowtimeDetail heThongRapChieu={filteredShowtimes} />

@@ -88,6 +88,11 @@ export default function AdminTemplate() {
                                                     icon: <FileAddOutlined />,
                                                     label: <NavLink to='film/addnewfilm'>Add Film</NavLink>,
                                                 },
+                                                {
+                                                    key: '23',
+                                                    icon: <FileAddOutlined />,
+                                                    label: <NavLink to='schedule'>Schedule Manager</NavLink>,
+                                                }
                                             ]
                                         },
                                         {
@@ -96,12 +101,12 @@ export default function AdminTemplate() {
                                             label: 'Cinema',
                                             children: [
                                                 {
-                                                    key: '23',
+                                                    key: '24',
                                                     icon: <SnippetsOutlined />,
                                                     label: <NavLink to='cinema'>Cinema Manager</NavLink>,
                                                 },
                                                 {
-                                                    key: '24',
+                                                    key: '25',
                                                     icon: <FileAddOutlined />,
                                                     label: <NavLink to='/admin/cinema/addnewcinema'>Add Cinema</NavLink>,
                                                 },
@@ -113,12 +118,12 @@ export default function AdminTemplate() {
                                             label: 'Room',
                                             children: [
                                                 {
-                                                    key: '25',
+                                                    key: '26',
                                                     icon: <SnippetsOutlined />,
                                                     label: <NavLink to='room'>Room Manager</NavLink>,
                                                 },
                                                 {
-                                                    key: '26',
+                                                    key: '27',
                                                     icon: <FileAddOutlined />,
                                                     label: <NavLink to='/admin/room/addnewroom'>Add Room</NavLink>,
                                                 },

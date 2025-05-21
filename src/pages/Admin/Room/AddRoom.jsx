@@ -3,16 +3,16 @@ import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { themPhongApi } from '../../../redux/reducers/RoomReducer';
-import { callApiCinema } from '../../../redux/reducers/CinemaReducer'; // 👈 Thêm reducer này
+import { callApiCinema } from '../../../redux/reducers/CinemaReducer';
 
 const { Option } = Select;
 
 export default function AddRoom() {
     const dispatch = useDispatch();
-    const { arrCinema } = useSelector(state => state.CinemaReducer); // 👈 lấy danh sách rạp
+    const { arrCinema } = useSelector(state => state.CinemaReducer);
 
     useEffect(() => {
-        dispatch(callApiCinema); // 👈 gọi API lấy danh sách rạp khi load
+        dispatch(callApiCinema);
     }, [dispatch]);
 
     const formik = useFormik({
@@ -21,7 +21,7 @@ export default function AddRoom() {
             roomName: '',
             numRow: 1,
             numCol: 1,
-            seatPrice: [0, 0, 0], // Couple, Normal, VIP
+            seatPrice: [0, 0, 0],
         },
         onSubmit: (values) => {
             dispatch(themPhongApi(values));

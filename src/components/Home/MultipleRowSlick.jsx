@@ -70,7 +70,7 @@ export default function MultipleRowSlick({ arrFilm }) {
         <div className='animate__animated animate__fadeInUp animate__fast pb-4'>
             <Slider {...settings}>
                 {films.map((film, index) => (
-                    <Card className='slick-card' variant="outlined" key={index}> {/* Update bordered to variant */}
+                    <Card className='slick-card' variant="outlined" key={index}>
                         <div className="flip-card">
                             <div className="flip-card-inner">
                                 <div className="flip-card-front">

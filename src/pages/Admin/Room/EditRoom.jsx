@@ -25,7 +25,7 @@ export default function EditRoom() {
             numCol: roomDetail?.numCol || 1,
             seatPrice: Array.isArray(roomDetail?.seatPrice) && roomDetail.seatPrice.length === 3
                 ? roomDetail.seatPrice
-                : [0, 0, 0],  // <-- Giá trị mặc định an toàn
+                : [0, 0, 0],
         },
         onSubmit: (values) => {
             dispatch(capNhatPhongApi(values, param.roomId));
@@ -49,11 +49,9 @@ export default function EditRoom() {
                 </Form.Item>
 
                 <Form.Item label="ID Rạp">
-                    <InputNumber
-                        name="cinemaId"
-                        min={1}
-                        onChange={(value) => formik.setFieldValue('cinemaId', value)}
+                    <Input
                         value={formik.values.cinemaId}
+                        disabled
                     />
                 </Form.Item>
 

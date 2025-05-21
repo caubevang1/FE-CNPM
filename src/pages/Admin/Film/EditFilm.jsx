@@ -23,32 +23,29 @@ export default () => {
             movieName: thongTinPhim.movieName,
             movieDescription: thongTinPhim.movieDescription,
             movieReview: thongTinPhim.movieReview,
-            moviePoster: thongTinPhim.moviePoster || '', // Lưu URL ảnh
+            moviePoster: thongTinPhim.moviePoster || '',
             movieGenre: thongTinPhim.movieGenre || '',
             movieLength: thongTinPhim.movieLength || '',
         },
         onSubmit: (value) => {
-            // Gửi trực tiếp dữ liệu JSON thay vì FormData
             const updatedMovie = {
                 movieId: value.movieId,
                 movieName: value.movieName,
                 movieDescription: value.movieDescription,
                 movieReview: value.movieReview,
-                moviePoster: value.moviePoster,  // URL của ảnh
+                moviePoster: value.moviePoster,
                 movieGenre: value.movieGenre,
                 movieLength: value.movieLength,
             };
 
-            // Cập nhật phim
             dispatch(upDateFilm(updatedMovie, value.movieId));
         }
     });
 
-    // Hệ thống tự động lấy ảnh từ URL khi người dùng nhập
     const handleChangeImageURL = (e) => {
         const url = e.target.value;
-        setImgSrc(url);  // Lưu URL ảnh vào state
-        formik.setFieldValue('moviePoster', url); // Lưu URL vào formik
+        setImgSrc(url);
+        formik.setFieldValue('moviePoster', url);
     };
 
     return (

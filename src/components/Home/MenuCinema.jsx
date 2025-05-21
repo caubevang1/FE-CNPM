@@ -29,28 +29,21 @@ export default function MenuCinema() {
         }
     }, [location]);
 
-    // Hàm lọc các phim có lịch chiếu tại rạp cụ thể
     const renderDanhSachPhim = (itemCumRap) => {
-        // Lọc ra các lịch chiếu của cụm rạp này
         const lichChieuCumRap = lichChieuList.filter(
             (schedule) => schedule.cinemaName === itemCumRap.cinemaName
         );
 
-        // Lọc các phim có suất chiếu tại cụm rạp này và phim đang chiếu hoặc sắp chiếu
         const phimTabs = phimList.filter(itemPhim => {
             const lichChieuTheoPhim = lichChieuCumRap.filter(
                 (lc) => lc.movieName === itemPhim.movieName
             );
 
-            // Lọc phim sắp chiếu hoặc đang chiếu
             const releaseDate = moment(itemPhim.releaseDate);
-            const currentDateTime = moment(); // Thời gian hiện tại
+            const currentDateTime = moment();
 
-            // Kiểm tra nếu ngày phát hành sau ngày hiện tại
             const isPhimSapChieu = releaseDate.isAfter(currentDateTime, 'day');
             const isSameDayAndAfterTime = releaseDate.isSame(currentDateTime, 'day') && moment(itemPhim.releaseTime, 'HH:mm:ss').isAfter(currentDateTime, 'minute');
-
-            // Phim sắp chiếu nếu ngày phát hành sau hôm nay hoặc nếu là ngày hôm nay và giờ phát hành sau giờ hiện tại
             return (lichChieuTheoPhim.length > 0 && !isPhimSapChieu && !isSameDayAndAfterTime);
         }).map((itemPhim, i) => {
             const lichChieuTheoPhim = lichChieuCumRap.filter(
@@ -61,7 +54,7 @@ export default function MenuCinema() {
                 label: (
                     <div className="flex border-b pb-4">
                         <div className="mr-4">
-                            <img
+                            <img alt="poster"
                                 className='h-[130px] w-[100px] object-cover'
                                 src={itemPhim.moviePoster}
                                 onError={(e) => {

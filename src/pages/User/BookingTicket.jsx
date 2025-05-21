@@ -9,9 +9,8 @@ import useRoute from '../../hooks/useRoute';
 import { LOCALSTORAGE_USER } from '../../utils/constant';
 import { getLocalStorage, SwalConfig } from '../../utils/config';
 import LoadingPage from '../LoadingPage';
-import { LayDanhSachPhongVeService, LayDanhSachGhe, DatVe } from '../../services/BookingManager';
+import { LayDanhSachPhongVeService, DatVe, LayDanhSachGheSchedule } from '../../services/BookingManager';
 import { datGhe, layDanhSachPhongVe, xoaDanhSachGheDangDat } from '../../redux/reducers/BookingReducer';
-import { ThongTinDatVe } from '../../_core/models/ThongTinDatVe';
 import { callApiThongTinNguoiDung } from '../../redux/reducers/UserReducer';
 import { layThongTinPhong } from '../../services/CinemaService';
 
@@ -31,7 +30,8 @@ const BookingTicketPage = () => {
         (async () => {
             try {
                 const sch = (await LayDanhSachPhongVeService(param.id)).data;
-                const allSeats = (await LayDanhSachGhe()).data;
+                const allSeats = (await LayDanhSachGheSchedule()).data;
+                console.log('allSeats', allSeats);
                 const rooms = (await layThongTinPhong()).data;
                 const room = rooms.find(r => r.roomId === sch.roomId);
                 if (room) {
@@ -52,8 +52,9 @@ const BookingTicketPage = () => {
                 };
 
                 const seats = allSeats
-                    .filter(s => s.roomId === sch.roomId)
+                    .filter(s => s.scheduleId === sch.scheduleId)
                     .map(s => ({
+                        seatScheduleId: s.seatScheduleId || s.seatScheduleId || s.seatScheduleID || s.seatSchedule?.id || s.id, // tuỳ API trả về, bạn xác định đúng key ở đây
                         seatId: s.seatId,
                         seatType: s.seatType,
                         seatRow: s.seatRow,
@@ -121,7 +122,7 @@ const BookingTicketPage = () => {
                                     <button
                                         key={ghe.seatId}
                                         disabled={booked}
-                                        onClick={() => dispatch(datGhe(ghe))}
+                                        onClick={() => dispatch(datGhe({ ...ghe, username: thongTinNguoiDung?.username || '' }))}
                                         style={{
                                             width: 40,
                                             height: 40,
@@ -178,19 +179,38 @@ const BookingTicketPage = () => {
     };
 
     const handleDatVe = async () => {
-        if (!danhSachGheDangDat.length) return SwalConfig('Vui lòng chọn ghế', 'warning', true);
+        if (!danhSachGheDangDat.length) {
+            return SwalConfig('Vui lòng chọn ghế', 'warning', true);
+        }
+
         setIsLoading(true);
         try {
-            await DatVe(new ThongTinDatVe(param.id, danhSachGheDangDat));
+            const payload = {
+                scheduleId: parseInt(param.id),
+                userId: thongTinNguoiDung?.id || '',
+                seats: danhSachGheDangDat.map(ghe => ({
+                    seatScheduleId: ghe.seatScheduleId
+                })),
+                foodAndDrinks: []
+            };
+
+            console.log('Dữ liệu gửi đi:', payload);
+
+            await DatVe(payload);
+
             SwalConfig('Đặt vé thành công', 'success');
             dispatch(xoaDanhSachGheDangDat());
             dispatch(callApiThongTinNguoiDung);
-        } catch (e) {
-            console.error(e);
+        } catch (error) {
+            console.error('Lỗi đặt vé:', error);
+            SwalConfig('Đặt vé thất bại', 'error');
         } finally {
             setIsLoading(false);
         }
     };
+
+
+
 
     const items = [
         {
@@ -229,6 +249,45 @@ const BookingTicketPage = () => {
                             <p style={{ marginBottom: 16, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Email:</strong> {thongTinNguoiDung.email}</p>
                             <p style={{ marginBottom: 50, marginTop: 10, color: 'grey' }}><strong style={{ color: 'black' }}>Phone:</strong> {thongTinNguoiDung.phoneNumber}</p>
                         </div>
+                        <button
+                            onClick={() => {
+                                if (danhSachGheDangDat.length === 0) {
+                                    SwalConfig('Vui lòng chọn ít nhất 1 ghế để chọn combo', 'warning', true);
+                                    return;
+                                }
+
+                                const userId = thongTinNguoiDung?.id;
+                                if (!userId) {
+                                    SwalConfig('Thiếu thông tin người dùng', 'error', true);
+                                    return;
+                                }
+
+                                const bookingInfo = {
+                                    scheduleId: Number(param.id),
+                                    userId: userId,
+                                    cinemaName: thongTinPhim?.cinemaName,
+                                    seats: danhSachGheDangDat.map(ghe => ({
+                                        seatScheduleId: ghe.seatScheduleId
+                                    }))
+                                };
+
+                                localStorage.setItem('booking_info', JSON.stringify(bookingInfo));
+                                navigate('/foodanddrink');
+                            }}
+                            style={{
+                                width: '100%',
+                                padding: '12px 0',
+                                background: '#10b981',
+                                border: 'none',
+                                borderRadius: 8,
+                                color: '#fff',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                marginBottom: 12,
+                            }}
+                        >
+                            CHỌN COMBO
+                        </button>
                         <button className='dat_ve_button' onClick={handleDatVe} style={{ width: '100%', padding: '12px 0', background: '#f97316', border: 'none', borderRadius: 8, color: '#fff', fontWeight: '700', cursor: 'pointer' }}>
                             ĐẶT VÉ
                         </button>

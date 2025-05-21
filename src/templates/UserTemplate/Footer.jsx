@@ -71,7 +71,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div className="space-y-3">
-                        <h3 className="text-zinc-200 title-widget text-sm sm:text-lg font-medium">DOWNLOAD APP</h3>
+                        <h3 className="text-zinc-200 title-widget text-sm sm:text-lg font-medium">ĐA NỀN TẢNG </h3>
                         <ul className="space-y-3">
                             <li>
                                 <a href="#!" target='_blank' rel="noopener noreferrer" className='text-zinc-300 title-widget-item'>
